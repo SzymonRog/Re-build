@@ -8,8 +8,6 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -17,6 +15,57 @@
     --background: #0a0a0a;
     --foreground: #ededed;
   }
+}
+
+@font-face {
+  font-family: 'Satoshi';
+  src: url('/fonts/Satoshi-Light.woff2') format('woff2');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Satoshi';
+  src: url('/fonts/Satoshi-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Satoshi';
+  src: url('/fonts/Satoshi-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Satoshi';
+  src: url('/fonts/Satoshi-Black.woff2') format('woff2');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+.navbar-container {
+  @apply flex justify-center items-center max-md:px-15 max-sm:px-10 px-20 py-10 w-full;
+}
+
+.custom-gradient {
+  @apply min-h-screen bg-[linear-gradient(to_bottom,_#07072F_0%,_#0071C5_75%,_#41CFF8_100%)];
+}
+.font-satoshi{
+  font-family: 'Satoshi';
+}
+.hero-container {
+  @apply flex  max-md:gap-10 max-md:flex-wrap-reverse max-md:justify-center justify-between   py-5 max-w-[1600px] w-full max-h-[1000px];
+}
+.hero-content{
+  @apply flex flex-col md:gap-10 gap-5 w-auto max-w-3xl max-md:text-center justify-center max-md:items-center;
+}
+.btn-hero{
+  @apply flex rounded-4xl max-md:px-20 px-10 py-4 font-semibold bg-white text-black w-fit hover:scale-101 hover:shadow-xl;
 }
 
 body {

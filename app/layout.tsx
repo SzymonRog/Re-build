@@ -11,6 +11,10 @@ const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
 });
+// const satoshi = Satoshi({
+//     variable: "--font-satoshi",
+//     subsets: [],
+// })
 
 export const metadata: Metadata = {
   title: "Create Next App",
