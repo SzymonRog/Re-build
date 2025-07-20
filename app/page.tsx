@@ -15,7 +15,7 @@ export default function Home() {
                         <h2 className="font-semibold font-bold xl:text-5xl  lg:text-4xl text-3xl  opacity-75 mb-10">sprawdz kompatybilność i najniższe
                             ceny</h2>
                         <button className="btn-hero"><Link
-                            href="/build/new">Zacznij Tworzyć</Link></button>
+                            href="/konfiguracja/nowa">Zacznij Tworzyć</Link></button>
                     </div>
                     <div className="relative">
                         <Image src="/computer-preview.png" alt="computer" width={800} height={800}

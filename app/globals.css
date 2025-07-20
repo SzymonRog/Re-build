@@ -49,7 +49,11 @@
 }
 
 .navbar-container {
-  @apply flex justify-center items-center max-md:px-15 max-sm:px-10 px-20 py-10 w-full;
+  @apply flex justify-center items-center max-md:px-15 max-sm:px-10 px-20 py-5 w-full;
+}
+
+.navbar-container-build {
+  @apply flex justify-center items-center px-10 py-5 w-full bg-[#E2E8F0] drop-shadow-lg;
 }
 
 .custom-gradient {
@@ -57,6 +61,12 @@
 }
 .font-satoshi{
   font-family: 'Satoshi';
+}
+.text-primary{
+  @apply text-[#0071C5];
+}
+.font-inter{
+  font-family: 'Inter';
 }
 .hero-container {
   @apply flex  max-md:gap-10 max-md:flex-wrap-reverse max-md:justify-center justify-between   py-5 max-w-[1600px] w-full max-h-[1000px];
@@ -68,8 +78,9 @@
   @apply flex rounded-4xl max-md:px-20 px-10 py-4 font-semibold bg-white text-black w-fit hover:scale-101 hover:shadow-xl;
 }
 
+
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: #F8FAFC;
+  color: #0F172A;
+  font-family: Satoshi, Inter, Arial, Helvetica, sans-serif;
 }
