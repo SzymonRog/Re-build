@@ -1,16 +1,19 @@
 import React from 'react'
 import BuildNavbar from "@/components/navbars/BuildNavbar";
+import SidebarDesktop from "@/components/sidebars/SidebarDesktop";
 
 
 const RootLayout = ({children} : {children: React.ReactNode}) => {
     return (
-        <div>
+        <section>
             <BuildNavbar/>
             <main>
-                {children}
+                <div className="flex flex-row">
+                    <SidebarDesktop/>
+                    {children}
+                </div>
             </main>
-
-        </div>
+        </section>
 
     )}
 export default RootLayout

@@ -5,7 +5,7 @@ import Link from "next/link";
 
 export default function Home() {
   return (
-    <div className="custom-gradient">
+    <div className="custom-gradient text-white">
         <LandingNavbar/>
         <section>
             <div className="flex flex-row justify-center max-md:px-15 max-sm:px-10 px-15">

@@ -1,0 +1,28 @@
+import React, {ReactNode} from 'react'
+import Image from "next/image";
+
+
+interface ComponentButtonProps {
+    type?: string;
+    isActive: boolean;
+    onClick: () => void;
+    children: ReactNode;
+}
+
+const ComponentButton: React.FC<ComponentButtonProps> = ({ type, isActive, onClick, children }) => {
+    return (
+        <button
+            className={`px-4 py-3 rounded-2xl w-full bg-white ${isActive ? "opacity-100 font-medium border-[#0071C5] border-2" : "opacity-50"}`}
+            onClick={onClick}
+        >
+            <div className="flex justify-between items-center">
+                {children}
+                <div className="bg-[#E2E8F0] rounded-sm">
+                    <Image src="/Checkbox.svg" alt="checkbox" width={18} height={18} className={type ? '' : 'invisible'}/>
+                </div>
+            </div>
+
+        </button>
+    )
+}
+export default ComponentButton
