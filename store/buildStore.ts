@@ -1,20 +1,21 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 
-type Component = {
+type PCComponent = {
     id: string
     type: string
     name: string
     price: number
+    imageUrl: string
 }
 
 type BuildState = {
     name: string
-    components: Component[]
+    components: PCComponent[]
     totalPrice: number
 
     setName: (name: string) => void
-    addComponent: (component: Component) => void
+    addComponent: (component: PCComponent) => void
     removeComponent: (type: string) => void
     clearBuild: () => void
     calculateTotal: () => void

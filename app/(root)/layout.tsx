@@ -8,8 +8,8 @@ const RootLayout = ({children} : {children: React.ReactNode}) => {
         <section>
             <BuildNavbar/>
             <main>
-                <div className="flex flex-row">
-                    <SidebarDesktop/>
+                <div className="flex flex-row w-full max-md:px-5">
+                    <div className="max-md:hidden max-w-[250px] w-full"><SidebarDesktop/></div>
                     {children}
                 </div>
             </main>
