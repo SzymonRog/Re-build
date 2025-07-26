@@ -12,7 +12,7 @@ interface ComponentButtonProps {
 const ComponentButton: React.FC<ComponentButtonProps> = ({ type, isActive, onClick, children }) => {
     return (
         <button
-            className={`px-4 py-3 rounded-2xl w-full bg-white ${isActive ? "opacity-100 font-medium border-[#0071C5] border-2" : "opacity-50"}`}
+            className={`px-4 py-3 border-2  transition rounded-2xl w-full  bg-white hover:border-[#0071C5]  ${isActive ? "opacity-100 font-medium border-[#0071C5] border-2" : "hover:opacity-75 opacity-50 border-transparent"}`}
             onClick={onClick}
         >
             <div className="flex justify-between items-center">

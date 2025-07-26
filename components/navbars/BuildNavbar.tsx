@@ -8,7 +8,7 @@ import Link from "next/link";
 
 
 
-const BuildNavbar = () => {
+const BuildNavbar = ({setSidebarOpen} : { setSidebarOpen: (val: boolean) => void }) => {
     const name = useConfigStore((s) => s.name)
     const totalPrice  = useBuildStore((s) => s.totalPrice)
     return (
@@ -34,7 +34,7 @@ const BuildNavbar = () => {
                 </div>
                 <div className="basis-full max-md:w-ful mt-4 flex flex-row items-center gap-4 md:hidden">
                     <div className="hamburger-menu">
-                        <button><Image src="/menu.svg" alt="menu" width={33} height={33} className="opacity-75"/></button>
+                        <button onClick={() => setSidebarOpen(true)}><Image src="/menu.svg" alt="menu" width={33} height={33} className="opacity-75"/></button>
                     </div>
                     <div className=" px-3 py-2 group bg-white w-full flex rounded-xl border border-gray-50 focus-within:border-2 focus-within:border-gray-500 transition-colors duration-200 ">
                         <input

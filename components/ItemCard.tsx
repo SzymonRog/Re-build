@@ -18,10 +18,10 @@ const ItemCard = ({name, price, imageUrl}: ItemCardProps) => {
                         <h2 className="font-satoshi font-medium  text-xl">{name}</h2>
                     </div>
                 </div>
-                <div className="flex flex-col gap-2 justify-center sm:items-end items-start">
+                <div className="flex flex-col sm:gap-2  gap-4 justify-center sm:items-end items-start">
                     <h2 className="font-satoshi text-3xl ">{price} <span className="text-xl">zł</span></h2>
-                    <button className="bg-[#0071C5] text-white rounded-2xl px-3 py-3 font-satoshi  lg:text-lg sm:text-md  text-xs font-medium">
-                        Dodaj do konfiguracji
+                    <button className="bg-[#0071C5] text-white rounded-2xl px-10 py-2 font-satoshi  lg:text-lg sm:text-md  text-md font-medium">
+                        Dodaj
                     </button>
                 </div>
             </div>

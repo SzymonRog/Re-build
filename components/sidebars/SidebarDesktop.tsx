@@ -18,7 +18,7 @@ const components = [
     { type: 'cpuCooler', label: 'Chłodzenie CPU' },
 ];
 
-const SidebarDesktop = () => {
+const SidebarDesktop = ({setSidebarOpen} : { setSidebarOpen: (val: boolean) => void }) => {
     const router = useRouter();
     const pathname = usePathname();
     const isAdding = pathname.includes('/dodaj');
@@ -26,10 +26,17 @@ const SidebarDesktop = () => {
     const parts = pathname.split('/');
     const type = isAdding ? parts[parts.length - 1] : null;
 
+    function handleClick(type:string){
+        setSidebarOpen(false);
+        router.push('/konfiguracja/nowa/dodaj/' + type)
+        return 0;
+    }
     return (
         <>
-        {isAdding ? (  <div className="bg-[#E2E8F0] px-4 py-5 flex flex-col gap-4 max-w-[250px] w-full h-screen justify-between">
-                <div>
+        {isAdding ? (  <div className="bg-[#E2E8F0] relative md:px-4 px-15 md:py-5 py-15 flex flex-col gap-4  w-full h-screen justify-between">
+                <button onClick={() => setSidebarOpen(false)} className="absolute top-7 right-15 md:hidden"><Image src={"/X.svg"} alt="X" width={25} height={25}/></button>
+                <div className="relative">
+
                     <div>
                         {/*   Progers Bar to do */}
                     </div>
@@ -46,7 +53,7 @@ const SidebarDesktop = () => {
                                         key={component.type}
                                         type={component.type}
                                         isActive={type === component.type}
-                                        onClick={() => router.push('/konfiguracja/nowa/dodaj/' + component.type)}>
+                                        onClick={() => handleClick(component.type)}>
                                         {component.label}
                                     </ComponentButton>
 
@@ -54,12 +61,13 @@ const SidebarDesktop = () => {
                         </div>
                     </div>
                 </div>
-                <div className="w-full flex justify-center items-center bg-[#0071C5] text-center py-3 rounded-full text-white">
-                    <Link href="/konfiguracja/nowa">Podsumowanie</Link>
-                </div>
+
+                    <Link href="/konfiguracja/nowa" onClick={() => setSidebarOpen(false)} className="w-full flex justify-center  items-center bg-[#0071C5]  py-3 rounded-full text-white "><div className="text-center">Podsumowanie</div></Link>
+
             </div>)
             :
-            (<div className="bg-[#E2E8F0] px-4 py-5 flex flex-col gap-4 max-w-[250px] w-full h-screen justify-between">
+            (<div className="bg-[#E2E8F0] relative md:px-4 px-15 md:py-5 py-20 flex flex-col gap-4  w-full h-screen justify-between">
+                <button onClick={() => setSidebarOpen(false)} className="absolute top-7 right-15 md:hidden"><Image src={"/X.svg"} alt="X" width={25} height={25}/></button>
                 <div>
                     <div>
                         {/*   Progers Bar to do */}
@@ -69,11 +77,11 @@ const SidebarDesktop = () => {
                         <div className="flex flex-col gap-[15px]">
 
                             <button
-                                className={`px-4 py-3 rounded-2xl w-full bg-white`}
+                                className={`px-4 py-3 rounded-2xl w-full bg-white `}
                              onClick={() => router.push('/konfiguracja/nowa/dodaj')}>
-                                <div className="flex justify-start gap-2 items-center">
+                                <div className="flex justify-start gap-2 items-center md:text-start text-center">
                                     <Image src="/add_icon.svg" alt="add icon" width={24} height={24} />
-                                    <h3>Dodaj komponenty</h3>
+                                    <h3 className="w-full">Dodaj komponenty</h3>
                                 </div>
 
                             </button>
@@ -81,9 +89,9 @@ const SidebarDesktop = () => {
                             <button
                                 className={`px-4 py-3 rounded-2xl w-full bg-white`}
                             >
-                                <div className="flex justify-start gap-5 items-center">
+                                <div className="flex justify-start gap-5 items-center md:text-start text-center">
                                     <Image src="/trashIcon.svg" alt="add icon" width={24} height={24} />
-                                    <h3>Usuń zestaw</h3>
+                                    <h3 className="w-full">Usuń zestaw</h3>
                                 </div>
 
                             </button>
@@ -92,9 +100,8 @@ const SidebarDesktop = () => {
                         </div>
                     </div>
                 </div>
-                <div className="w-full flex justify-center items-center bg-[#0071C5] text-center py-3 rounded-full text-white">
-                    <Link href="/konfiguracja/nowa/dodaj">Edytuj</Link>
-                </div>
+                    <Link href="/konfiguracja/nowa/dodaj" onClick={() => setSidebarOpen(false)}className="w-full flex justify-center  items-center bg-[#0071C5]  py-3 rounded-full text-white "><div className="text-center">Podsumowanie</div></Link>
+
             </div>)}
         </>
     )
