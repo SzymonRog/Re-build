@@ -1,7 +1,7 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 
-type PCComponent = {
+export type PCComponent = {
     id: string
     type: string
     name: string
@@ -9,7 +9,7 @@ type PCComponent = {
     imageUrl: string
 }
 
-type BuildState = {
+export  type BuildState = {
     name: string
     components: PCComponent[]
     totalPrice: number
