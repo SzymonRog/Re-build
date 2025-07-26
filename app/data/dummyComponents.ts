@@ -1,4 +1,4 @@
-import type { PCComponent } from '@/store/useBuildStore'
+import type { PCComponent } from '@/store/buildStore'
 
 export const dummyComponents: PCComponent[] = [
     {
