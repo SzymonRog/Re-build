@@ -100,7 +100,7 @@ const SidebarDesktop = ({setSidebarOpen} : { setSidebarOpen: (val: boolean) => v
                         </div>
                     </div>
                 </div>
-                    <Link href="/konfiguracja/nowa/dodaj" onClick={() => setSidebarOpen(false)}className="w-full flex justify-center  items-center bg-[#0071C5]  py-3 rounded-full text-white "><div className="text-center">Podsumowanie</div></Link>
+                    <Link href="/konfiguracja/nowa/dodaj" onClick={() => setSidebarOpen(false)}className="w-full flex justify-center  items-center bg-[#0071C5]  py-3 rounded-full text-white "><div className="text-center">Edytuj</div></Link>
 
             </div>)}
         </>

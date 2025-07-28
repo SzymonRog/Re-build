@@ -6,7 +6,7 @@ export type PCComponent = {
     type: string
     name: string
     price: number
-    imageUrl: string
+    imageUrl?: string
 }
 
 export  type BuildState = {
@@ -16,7 +16,7 @@ export  type BuildState = {
 
     setName: (name: string) => void
     addComponent: (component: PCComponent) => void
-    removeComponent: (type: string) => void
+    removeComponent: (componentId: string) => void
     clearBuild: () => void
     calculateTotal: () => void
 }
@@ -25,14 +25,36 @@ export  type BuildState = {
 export const useBuildStore = create<BuildState>()(
     persist(
         (set, get) => ({
-            name: '',
+            name: 'NoName',
             components: [],
             totalPrice: 0,
             setName: () => {},
-            addComponent: () => {},
-            removeComponent: () => {},
-            clearBuild: () => {},
-            calculateTotal: () => {},
+            addComponent: (newComponent) => {
+                const currentComponents = get().components;
+                const updated = [
+                    ...currentComponents.filter((c) => c.type !== newComponent.type),
+                    newComponent,
+                ];
+                set({ components: updated }, false);
+                get().calculateTotal();
+            },
+            removeComponent: (componentId) => {
+                const currentComponents = get().components;
+                const updated = currentComponents.filter((c) => c.id !== componentId);
+                set({ components: updated }, false);
+                get().calculateTotal();
+            },
+            clearBuild: () => {
+                set({
+                    components: [],
+                    totalPrice: 0,
+                })
+            },
+            calculateTotal: () => {
+                const currentComponents = get().components;
+                const total = currentComponents.reduce((acc, c) => acc + c.price, 0);
+                set({ totalPrice: total }, false);
+            },
         }),
         {
             name: 'pc-build-store',

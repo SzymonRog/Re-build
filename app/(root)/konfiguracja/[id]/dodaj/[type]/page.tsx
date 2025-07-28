@@ -1,7 +1,7 @@
 'use client'
 
 import React from 'react';
-import {usePathname, useRouter} from "next/navigation";
+import {usePathname} from "next/navigation";
 import {dummyComponents} from "@/app/data/dummyComponents";
 import ItemCard from "@/components/ItemCard";
 
@@ -23,9 +23,7 @@ const Page = () => {
                     {filtredComponents.map((component) => (
                         <ItemCard
                             key={component.id}
-                            name={component.name}
-                            price={component.price}
-                            imageUrl={component.imageUrl}
+                            componentData={component}
                         />
                     ))}
                 </div>
