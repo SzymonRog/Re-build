@@ -1,7 +1,6 @@
 'use client'
 
 import React from 'react'
-import { useConfigStore } from '@/store/config'
 import { useBuildStore } from '@/store/buildStore'
 import Image from "next/image";
 import Link from "next/link";
@@ -9,7 +8,7 @@ import Link from "next/link";
 
 
 const BuildNavbar = ({setSidebarOpen} : { setSidebarOpen: (val: boolean) => void }) => {
-    const name = useConfigStore((s) => s.name)
+    const name = useBuildStore((s) => s.name)
     const totalPrice  = useBuildStore((s) => s.totalPrice)
     return (
         <header className="navbar-container-build">
@@ -19,7 +18,7 @@ const BuildNavbar = ({setSidebarOpen} : { setSidebarOpen: (val: boolean) => void
                         <Image src="/logo.png" alt="re-build logo" width={43} height={47} />
                         <h3 className="text-2xl font-bold font-inter text-primary">Re-Build</h3>
                     </div>
-                    <h3 className="text-md max-md:hidden "><span className="opacity-75 text-md">Konfiguracja:  </span>{name ? name : 'Bez_nazwy'}</h3>
+                    <h3 className="text-md max-md:hidden "><span className="opacity-75 text-md">Konfiguracja:  </span>{name ? name : name}</h3>
                 </div>
                 <div className="flex gap-6 font-inter items-center">
                     <h3 className="text-md max-md:hidden "><span className="opacity-75 text-md">Suma:  </span>{totalPrice ? `${totalPrice} zł` : '0 zł'}</h3>

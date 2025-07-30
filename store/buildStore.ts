@@ -25,10 +25,10 @@ export  type BuildState = {
 export const useBuildStore = create<BuildState>()(
     persist(
         (set, get) => ({
-            name: 'NoName',
+            name: 'Bez_nazwy',
             components: [],
             totalPrice: 0,
-            setName: () => {},
+            setName: (name) => set({ name }),
             addComponent: (newComponent) => {
                 const currentComponents = get().components;
                 const updated = [

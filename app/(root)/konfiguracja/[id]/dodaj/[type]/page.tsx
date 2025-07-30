@@ -4,14 +4,24 @@ import React from 'react';
 import {usePathname} from "next/navigation";
 import {dummyComponents} from "@/app/data/dummyComponents";
 import ItemCard from "@/components/ItemCard";
+import {useBuildStore} from "@/store/buildStore";
 
 const Page = () => {
 
     const pathname = usePathname();
-
     const parts = pathname.split('/');
     const type =  parts[parts.length - 1];
-    const filtredComponents = dummyComponents.filter(component => component.type === type)
+    const curentPart = useBuildStore(state => state.components.find((c) => c.type === type))
+    const activeId = curentPart?.id || null;
+
+
+    const filtredComponents = dummyComponents.filter(component => component.type === type).sort(
+        (a, b) =>{
+            if(a.id === activeId) return -1;
+            if(b.id === activeId) return 1;
+            return 0;
+        }
+    )
 
     return (
         <section className="w-full h-full lg:justify-center flex flex-col ">
@@ -23,6 +33,7 @@ const Page = () => {
                     {filtredComponents.map((component) => (
                         <ItemCard
                             key={component.id}
+                            isSelected={activeId === component.id}
                             componentData={component}
                         />
                     ))}
