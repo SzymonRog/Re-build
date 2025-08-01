@@ -45,7 +45,7 @@ const ComponentInfo = ({componentData} : ComponentsProps) => {
     const Image = typeImages[type] || <CircleQuestionMark className="w-full h-full"/>;
     return (
         <>
-            <div className="flex flex-row justify-between pr-10 px-2 gap-5 w-full">
+            <div className="flex flex-row justify-between pr-10 px-2 gap-5 w-full mb-2">
                 <div className="flex flex-row gap-5 items-center">
                     <Image className="w-8 h-8"/>
                     <div className="flex flex-col gap-2">
@@ -59,7 +59,6 @@ const ComponentInfo = ({componentData} : ComponentsProps) => {
                 </div>
 
             </div>
-            <hr className="border-black border-0.5"/>
         </>
 
     )

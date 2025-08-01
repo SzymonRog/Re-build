@@ -53,7 +53,8 @@ const SidebarDesktop = ({setSidebarOpen} : { setSidebarOpen: (val: boolean) => v
     }
     return (
         <>
-        {isAdding ? (  <div className="bg-[#E2E8F0] relative md:px-4 px-15 md:py-5 py-15 flex flex-col gap-4  w-full h-screen justify-between">
+        {isAdding ? (
+            <div className="bg-[#E2E8F0] relative max-sm:px-10 md:px-4 px-15 md:py-4  py-15 flex flex-col gap-4  w-full h-screen justify-between overflow-y-auto">
                 <button onClick={() => setSidebarOpen(false)} className="absolute top-7 right-15 md:hidden"><Image src={"/X.svg"} alt="X" width={25} height={25}/></button>
                 <div className="relative flex flex-col gap-10">
 
@@ -83,7 +84,7 @@ const SidebarDesktop = ({setSidebarOpen} : { setSidebarOpen: (val: boolean) => v
                     </div>
                 </div>
 
-                    <Link href="/konfiguracja/nowa" onClick={() => setSidebarOpen(false)} className="w-full flex justify-center  items-center bg-[#0071C5]  py-3 rounded-full text-white "><div className="text-center">Podsumowanie</div></Link>
+                    <Link href="/konfiguracja/nowa" onClick={() => setSidebarOpen(false)} className="md:max-w-[214px] w-full flex justify-center  items-center bg-[#0071C5]  py-3 rounded-full text-white md:fixed md:bottom-3 md:left-4"><div className="text-center">Podsumowanie</div></Link>
 
             </div>)
             :

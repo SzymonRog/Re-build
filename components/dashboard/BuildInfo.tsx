@@ -16,8 +16,8 @@ const BuildInfo = () => {
         setIsEditing(false)
     }
     return (
-        <div className="flex flex-col bg-[#0071C5] rounded-2xl shadow-xl p-5 pr-10 gap-3 w-full" >
-            <div className="flex flex-col gap-1 w-full">
+        <div className="flex flex-col bg-[#0071C5] rounded-2xl shadow-xl   p-8 pr-10 gap-4 w-full" >
+            <div className="flex flex-col gap-2 w-full">
 
                 <h4 className="text-white text-md font-inter">Konfiguracja:</h4>
 
@@ -52,7 +52,7 @@ const BuildInfo = () => {
 
                 </div>
             </div>
-            <div className="flex flex-col gap-1 w-full">
+            <div className="flex flex-col gap-2 w-full">
                 <h4 className="text-white text-md font-inter">Suma:</h4>
                 <h2 className="text-white text-4xl font-satoshi font-medium">{totalPrice} zł</h2>
             </div>

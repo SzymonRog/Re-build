@@ -13,7 +13,8 @@ const Page = () => {
 
     return (
 
-            <div className="flex flex-col gap-8 md:p-15 p-4  lg:items-center  w-full">
+        <>
+            <div className="lg:flex flex-col gap-8 md:p-15 p-4  lg:items-center  w-full hidden">
                 <div className="flex flex-row gap-8 justify-center w-full max-w-[2000px]">
                     <div className="flex flex-col gap-8 md:max-w-[400px] w-full">
                         <BuildInfo/>
@@ -21,8 +22,16 @@ const Page = () => {
                     </div>
                     <BuildOverview/>
                 </div>
-
             </div>
+
+            <div className="max-lg:flex flex-col gap-8 md:p-15 p-4  lg:items-center  w-full hidden">
+                <div className="flex flex-col gap-8 justify-center w-full max-w-[2000px]">
+                    <BuildInfo/>
+                    <BuildOverview/>
+                    <Compatibility/>
+                </div>
+            </div>
+        </>
 
     )
 }
