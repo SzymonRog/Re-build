@@ -1,0 +1,61 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id  String @id @default(uuid())
+  name String?
+  email String? @unique
+  password String?
+  image String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  builds Build[]
+}
+
+model Build{
+  id  String @id @default(uuid())
+  userId String?
+  name String
+  totalPrice Float
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User? @relation(fields: [userId], references: [id])
+  components BuildComponent[]
+}
+
+model Component{
+  id  String @id @default(uuid())
+  type String
+  name String
+  price Float
+  imageUrl String?
+  description Json
+
+  buildComponents BuildComponent[]
+}
+
+model BuildComponent{
+  id  String @id @default(uuid())
+  buildId String
+  componentId String
+  addedAt DateTime @default(now())
+
+  build       Build     @relation(fields: [buildId], references: [id])
+  component   Component @relation(fields: [componentId], references: [id])
+
+  @@unique([buildId,componentId])
+}
