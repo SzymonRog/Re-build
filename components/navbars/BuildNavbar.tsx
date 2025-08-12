@@ -4,12 +4,17 @@ import React from 'react'
 import { useBuildStore } from '@/store/buildStore'
 import Image from "next/image";
 import Link from "next/link";
+import {useUserStore} from "@/store/user";
 
 
 
 const BuildNavbar = ({setSidebarOpen} : { setSidebarOpen: (val: boolean) => void }) => {
     const name = useBuildStore((s) => s.name)
     const totalPrice  = useBuildStore((s) => s.totalPrice)
+    const user = useUserStore(state => state.user)
+    console.log('user in BuildNavbar:', user)
+
+
     return (
         <header className="navbar-container-build">
             <div className="flex items-center justify-between w-full max-md:flex-wrap">
@@ -23,9 +28,14 @@ const BuildNavbar = ({setSidebarOpen} : { setSidebarOpen: (val: boolean) => void
                 <div className="flex gap-6 font-inter items-center">
                     <h3 className="text-md max-md:hidden "><span className="opacity-75 text-md">Suma:  </span>{totalPrice ? `${totalPrice} zł` : '0 zł'}</h3>
                     <div className="flex flex-row gap-2 font-lg justify-center items-center max-md:hidden">
-                        <Link href="/auth/register">Stwórz konto</Link>
-                        <span>|</span>
-                        <Link href="/auth/login">Zaloguj się</Link>
+                        {user ?
+                            (<p>Witaj {user.name}</p>)
+                            : 
+                            (<><Link href="/auth/register">Stwórz konto</Link>
+                                <span>|</span>
+                                <Link href="/auth/login">Zaloguj się</Link></>)
+                        }
+                        
                     </div>
                     <Link href="/auth/login">
                         <Image src="/account.svg" alt="account icon" width={40} height={40} />

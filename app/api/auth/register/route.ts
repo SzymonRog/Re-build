@@ -48,7 +48,7 @@ export async function POST(request: Request) {
             { status: 201 }
         )
 
-    }catch (e) {
+    }catch (e: any) {
         if (e.code === 'P2002') {
             return NextResponse.json(
                 { success: false, error: { code: 'EMAIL_TAKEN', message: 'Ten email jest już zajęty' } },

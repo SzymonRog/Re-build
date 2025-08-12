@@ -1,6 +1,6 @@
 'use client'
 
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
@@ -19,6 +19,9 @@ import { Input } from "@/components/ui/input"
 import {Checkbox} from "@/components/ui/checkbox"
 import Image from "next/image";
 import {Label} from "@/components/ui/label";
+import {toast} from "sonner";
+import {useRouter} from "next/navigation";
+import {useUserStore} from "@/store/user";
 
 const formSchema = z.object({
     email: z.string().email('Niepoprawny email'),
@@ -30,6 +33,7 @@ const formSchema = z.object({
 const LoginForm = () => {
 
     const [show, setShow] = useState(false)
+    const router = useRouter();
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -39,10 +43,47 @@ const LoginForm = () => {
         },
     })
 
-    function onSubmit(values: z.infer<typeof formSchema>) {
-        // Do something with the form values.
-        // ✅ This will be type-safe and validated.
-        console.log(values)
+    async function onSubmit(values: z.infer<typeof formSchema>) {
+        try{
+            const {email, password} = values;
+            const response = await fetch('/api/auth/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    email,
+                    password,
+                }),
+            })
+            const data = await response.json()
+            console.log("server response", data.user);
+            if(!response.ok){
+                toast(data.error.message)
+                if(data?.error?.code === 'INVALID_DATA'){
+                    form.setError('email', { type: 'manual', message: data.error.message });
+                    form.setError('password', { type: 'manual', message: data.error.message });
+                }else {
+                    form.clearErrors('email');
+                }
+                return;
+            }
+
+            toast(data.message)
+            form.reset();
+            if(data.success){
+                useUserStore.getState().setUser(data.user);
+                router.push('/konfiguracja/nowa');
+            }
+
+
+
+
+        }catch (e) {
+            console.error(e);
+            toast('Błąd połączenia z serwerem.');
+        }
+
     }
     return (
         <Form {...form}>

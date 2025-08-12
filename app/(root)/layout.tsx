@@ -6,6 +6,7 @@ import SidebarDesktop from "@/components/sidebars/SidebarDesktop";
 
 
 const RootLayout = ({children} : {children: React.ReactNode}) => {
+
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [hasMounted, setHasMounted] = useState(false);
 
