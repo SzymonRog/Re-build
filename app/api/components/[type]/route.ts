@@ -1,11 +1,8 @@
 import prisma from "@/prisma/client";
 import {NextResponse} from "next/server";
 
-interface Params {
-    params: { type: string };
-}
 
-export async function GET(req: Request, context: Params){
+export async function GET(req: Request, context: any){
     try {
         const type = context.params.type;
 
