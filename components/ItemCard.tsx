@@ -9,7 +9,7 @@ type ItemCardProps = {
 }
 
 const ItemCard = ({componentData,isSelected}: ItemCardProps) => {
-    const {imageUrl, name, price} = componentData;
+    const {imageUrl, name, price, description, specs} = componentData;
     const addComponent = useBuildStore(state => state.addComponent)
     function addComponentToBuild(component:PCComponent){
         addComponent(component)
@@ -21,15 +21,25 @@ const ItemCard = ({componentData,isSelected}: ItemCardProps) => {
     return (
         <div className={`bg-white rounded-xl flex flex-row justify-between gap-5 pr-4 pl-0 lg:pr-20 lg:pl-12 py-4 drop-shadow-sm w-full max-w-[1000px] ${isSelected ? 'border-[2] border-[#80B8E2]' : ''}`}>
             <Image src={imageUrl || ""} alt={name} width={150} height={150} className="sm:hidden object-contain"/>
-            <div className="flex sm:flex-row flex-col justify-center sm:justify-between sm:items-center items-start gap-4 w-full">
-                <div className="flex sm:flex-row gap-4 items-center">
-                    <Image src={imageUrl || ""} alt={name} width={150} height={150} className="max-sm:hidden object-cover object-contain"/>
-                    <div className="flex justify-center">
+            <div className="flex sm:flex-row flex-col justify-center sm:justify-between sm:items-center items-start sm:gap-4 gap-8 w-full">
+                <div className="flex sm:flex-row gap-8 sm:items-center">
+                    <Image src={imageUrl || ""} alt={name} width={150} height={150} className="max-sm:hidden  object-cover"/>
+                    <div className="flex flex-col justify-center gap-3">
                         <h2 className="font-satoshi font-medium  text-xl">{name}</h2>
+                        <ul>
+                            {Object.entries(description).map(([key, value]) => (
+                                <li key={key} className="text-md opacity-75">
+                                    <span className="text-sm">{key}</span>: {value}
+                                </li>
+                            ))}
+                        </ul>
                     </div>
                 </div>
                 <div className="flex flex-col sm:gap-2  gap-4 justify-center sm:items-end items-start">
-                    <h2 className="font-satoshi text-3xl ">{price} <span className="text-xl">zł</span></h2>
+
+                        <h2 className="font-satoshi text-3xl ">{price} <span className="text-xl">zł</span></h2>
+
+
                     <button
                         onClick={() => addComponentToBuild(componentData)}
                         className="

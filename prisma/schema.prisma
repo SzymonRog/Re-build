@@ -44,6 +44,7 @@ model Component{
   price Float
   imageUrl String?
   description Json
+  specs Json
 
   buildComponents BuildComponent[]
 }

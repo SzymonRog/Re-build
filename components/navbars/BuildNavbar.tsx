@@ -1,10 +1,14 @@
 'use client'
 
-import React from 'react'
+import React, {useRef, useState} from 'react'
 import { useBuildStore } from '@/store/buildStore'
 import Image from "next/image";
 import Link from "next/link";
 import {useUserStore} from "@/store/user";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import {toast} from "sonner";
+
+
 
 
 
@@ -12,9 +16,20 @@ const BuildNavbar = ({setSidebarOpen} : { setSidebarOpen: (val: boolean) => void
     const name = useBuildStore((s) => s.name)
     const totalPrice  = useBuildStore((s) => s.totalPrice)
     const user = useUserStore(state => state.user)
-    console.log('user in BuildNavbar:', user)
+    const [open, setOpen] = useState(false)
 
 
+    async function handleLogout() {
+        try{
+            await fetch('/api/auth/logout', {method: 'POST'})
+            window.location.href = '/auth/login'
+            toast('Urzytkownik został wylogowany nastąpi przekierowanie')
+            return;
+        }catch (e) {
+            console.error(e)
+        }
+
+    }
     return (
         <header className="navbar-container-build">
             <div className="flex items-center justify-between w-full max-md:flex-wrap">
@@ -37,9 +52,27 @@ const BuildNavbar = ({setSidebarOpen} : { setSidebarOpen: (val: boolean) => void
                         }
                         
                     </div>
-                    <Link href="/auth/login">
-                        <Image src="/account.svg" alt="account icon" width={40} height={40} />
-                    </Link>
+                    {user ? (
+
+                        <DropdownMenu open={open} onOpenChange={setOpen}>
+                                <DropdownMenuTrigger asChild>
+                                    <Image src="/account.svg" alt="account icon" width={40} height={40}
+                                           className="cursor-pointer"/>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent>
+                                    <DropdownMenuItem onClick={() => {
+                                    }}>Zarządzaj kontem</DropdownMenuItem>
+                                    <DropdownMenuItem onClick={handleLogout}>Wyloguj się</DropdownMenuItem>
+                                </DropdownMenuContent>
+                        </DropdownMenu>
+
+                    ):
+                        (
+                            <Link href="/auth/login">
+                                <Image src="/account.svg" alt="account icon" width={40} height={40} />
+                            </Link>
+                        )}
+
                 </div>
                 <div className="basis-full max-md:w-ful mt-4 flex flex-row items-center gap-4 md:hidden">
                     <div className="hamburger-menu">

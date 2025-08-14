@@ -57,7 +57,7 @@ const LoginForm = () => {
                 }),
             })
             const data = await response.json()
-            console.log("server response", data.user);
+
             if(!response.ok){
                 toast(data.error.message)
                 if(data?.error?.code === 'INVALID_DATA'){

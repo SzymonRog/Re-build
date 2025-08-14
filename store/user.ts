@@ -19,7 +19,6 @@ export const useUserStore = create<AuthState>((set) => ({
     user: null,
     isAuthenticated: false,
     setUser: (user) => {
-        console.log('Zmieniam usera w zustand:', user);
         set({ user, isAuthenticated: true });
     },
     clearUser: () => set({ user: null, isAuthenticated: false }),
