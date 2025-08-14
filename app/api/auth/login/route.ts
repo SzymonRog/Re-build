@@ -57,7 +57,7 @@ export async function POST(request: Request){
         return response
 
 
-    }catch (e: any) {
+    }catch (e: unknown) {
         console.error(e)
         return NextResponse.json(
             {success: false, error:{code: 'SERVER_ERROR', message:'Serwer napotkał nieoczekiwany problem'} },

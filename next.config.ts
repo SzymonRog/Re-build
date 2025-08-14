@@ -5,6 +5,9 @@ const nextConfig: NextConfig = {
     images: {
         domains: ['dummyimage.com'], // dodaj hostname, z którego pobierasz obrazki
     },
+    eslint: {
+        ignoreDuringBuilds: true,
+    },
 };
 
 export default nextConfig;

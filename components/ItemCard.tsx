@@ -9,7 +9,7 @@ type ItemCardProps = {
 }
 
 const ItemCard = ({componentData,isSelected}: ItemCardProps) => {
-    const {imageUrl, name, price, description, specs} = componentData;
+    const {imageUrl, name, price, description} = componentData;
     const addComponent = useBuildStore(state => state.addComponent)
     function addComponentToBuild(component:PCComponent){
         addComponent(component)
