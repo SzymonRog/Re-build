@@ -1,13 +1,8 @@
 'use client'
 import React, {useEffect, useState} from 'react'
-import {useUserStore} from "@/store/user";
+import {User, useUserStore} from "@/store/user";
 
-interface User {
-    userId: string;
-    email: string;
-    name: string;
-    // dodaj inne pola, które masz w JWT
-}
+
 
 interface AuthProviderClientProps {
     user: User | null;

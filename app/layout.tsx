@@ -4,7 +4,8 @@ import { Toaster } from "@/components/ui/sonner"
 import { Inter } from 'next/font/google'
 import AuthProviderClient from "@/components/auth/AuthProviderClient";
 import {cookies} from "next/headers";
-import jwt from "jsonwebtoken";
+import jwt, {JwtPayload} from "jsonwebtoken";
+import {User} from "@/store/user";
 
 
 const inter = Inter({
@@ -26,27 +27,24 @@ export default async function RootLayout({
     const cookieStore = await cookies()
     const tokenCookie = cookieStore.get('auth_token')
 
-    let user = null;
+    let user: User | null  = null;
+
 
     if (tokenCookie) {
         try {
-            user = jwt.verify(tokenCookie.value, process.env.JWT_SECRET!);
-            // user będzie obiektem z payload tokena, np { userId, email, name, iat, exp }
+            const payload = jwt.verify(tokenCookie.value, process.env.JWT_SECRET!) as JwtPayload;
+
+            user = {
+                id: payload.userId as string,
+                email: payload.email as string,
+                name: payload.name as string,
+            }
         } catch (error) {
-            // Token jest niepoprawny lub wygasł
             user = null;
         }
     }
 
-    if (tokenCookie) {
-        try {
-            user = jwt.verify(tokenCookie.value, process.env.JWT_SECRET!);
-            // user będzie obiektem z payload tokena, np { userId, email, name, iat, exp }
-        } catch (error) {
-            // Token jest niepoprawny lub wygasł
-            user = null;
-        }
-    }
+
   return (
     <html lang="en">
       <body
@@ -56,7 +54,6 @@ export default async function RootLayout({
       <main>
           <AuthProviderClient user={user}/>
               {children}
-
       </main>
       <Toaster />
       </body>
