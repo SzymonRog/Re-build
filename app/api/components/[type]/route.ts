@@ -1,11 +1,8 @@
 import prisma from "@/prisma/client";
 import {NextResponse} from "next/server";
-export async function GET(
-    _req: Request,
-    { params }: { params: { type: string } }
-){
+export async function GET(req: Request, context: { params: Record<string, string> }){
     try {
-        const {type} = await params
+        const type = context.params.type;
 
         const components = await prisma.component.findMany({
             where: {
