@@ -12,7 +12,7 @@ export type PCComponent = {
     imageUrl?: string
 }
 
-type ValidationError = {
+export type ValidationError = {
     type: string,
     message: string,
     components?: PCComponent[],
@@ -56,6 +56,7 @@ export const useBuildStore = create<BuildState>()(
                 const updated = currentComponents.filter((c) => c.id !== componentId);
                 set({ components: updated }, false);
                 get().calculateTotal();
+                get().validateBuild();
             },
             clearBuild: () => {
                 set({

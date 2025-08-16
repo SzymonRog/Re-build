@@ -24,21 +24,21 @@ export  function validateBuild(components:PCComponent[]): ValidationError[] {
     if (!cpu) {
         errors.push({
             type: 'missing_component',
-            message: 'Brak procesora w buildzie',
+            message: 'Brak procesora w konfiguracji',
         });
     }
 
     if (!motherboard) {
         errors.push({
             type: 'missing_component',
-            message: 'Brak płyty głównej w buildzie',
+            message: 'Brak płyty głównej w konfiguracji',
         });
     }
 
     if (!ram) {
         errors.push({
             type: 'missing_component',
-            message: 'Brak pamięci RAM w buildzie',
+            message: 'Brak pamięci RAM w konfiguracji',
         });
     }
 
@@ -47,7 +47,7 @@ export  function validateBuild(components:PCComponent[]): ValidationError[] {
         if (cpu.specs.socket !== motherboard.specs.socket) {
             errors.push({
                 type: 'incompatible',
-                message: 'Procesor i płyta główna nie są kompatybilne',
+                message: `Procesor (${cpu.name}) i płyta główna (${motherboard.name}) nie są kompatybilne`,
                 components: [cpu, motherboard],
             });
         }
@@ -58,7 +58,7 @@ export  function validateBuild(components:PCComponent[]): ValidationError[] {
         if (ram.specs.type && motherboard.specs.memoryType && !motherboard.specs.memoryType.includes(ram.specs.type)) {
             errors.push({
                 type: 'incompatible',
-                message: 'Pamięć RAM nie jest kompatybilna z płytą główną',
+                message: `Pamięć RAM (${ram.name}) nie jest kompatybilna z płytą główną (${motherboard.name})`,
                 components: [ram, motherboard],
             });
         }
@@ -69,7 +69,7 @@ export  function validateBuild(components:PCComponent[]): ValidationError[] {
         if (cpu && cooler.specs.compatibleSockets && !cooler.specs.compatibleSockets.includes(cpu.specs.socket)) {
             errors.push({
                 type: 'incompatible',
-                message: 'Chłodzenie CPU nie jest kompatybilne z procesorem',
+                message: `Chłodzenie CPU (${cooler.name}) nie jest kompatybilne z procesorem (${cpu.name})`,
                 components: [cooler, cpu],
             });
         }
@@ -77,7 +77,7 @@ export  function validateBuild(components:PCComponent[]): ValidationError[] {
             if(!caseCompatiblity[pcCase.specs.formFactor].includes(motherboard.specs.formFactor))
             errors.push({
                 type: 'incompatible',
-                message: 'Płyta główna nie mieśći sie w obudowie',
+                message: `Płyta główna (${motherboard.name}) nie mieśći sie w obudowie (${pcCase.name})`,
                 components: [motherboard, pcCase],
             });
         }

@@ -7,19 +7,20 @@ interface ComponentButtonProps {
     isActive: boolean;
     onClick: () => void;
     isAdded?: boolean;
+    hasError?: boolean;
     children: ReactNode;
 }
 
-const ComponentButton: React.FC<ComponentButtonProps> = ({ type, isActive, onClick, children, isAdded }) => {
+const ComponentButton: React.FC<ComponentButtonProps> = ({ isActive, onClick, children, isAdded, hasError }) => {
     return (
         <button
-            className={`px-4 py-3 border-2  transition rounded-2xl w-full  bg-white hover:border-[#0071C5]  ${isActive ? "opacity-100 font-medium border-[#0071C5] border-2" : "hover:opacity-75 opacity-50 border-transparent"}`}
+            className={`px-4 py-2 border-1  transition rounded-lg w-full ${hasError ? 'hover:border-transparent border-rose-600' : ''}  ${isActive ? " border-transparent opacity-100 bg-[#0071C5] text-white font-medium border-[#0071C5]" : "hover:text-white hover:bg-[#6398e3] bg-white hover:opacity-100 opacity-75"}`}
             onClick={onClick}
         >
             <div className="flex justify-between items-center">
                 {children}
-                <div className="bg-[#E2E8F0] rounded-sm">
-                     <Image src="/Checkbox.svg" alt="checkbox" width={18} height={18} className={isAdded ? '' : 'invisible'}/>
+                <div className={`bg-[#E2E8F0] ${hasError ? 'rounded-full' : 'rounded-sm'}`}>
+                    {hasError ? (<Image src="/error.svg" alt="checkbox" width={18} height={18}/>) : (<Image src="/Checkbox.svg" alt="checkbox" width={18} height={18} className={isAdded ? '' : 'invisible'}/>)}
                 </div>
             </div>
 

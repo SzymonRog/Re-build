@@ -42,6 +42,7 @@ const SidebarDesktop = ({setSidebarOpen} : { setSidebarOpen: (val: boolean) => v
     const clearBuild = useBuildStore(state => state.clearBuild)
     const components = useBuildStore(state => state.components)
     const addedTypes = new Set(components.map(c => c.type))
+    const errors = useBuildStore(state => state.errors)
 
     const parts = pathname.split('/');
     const type = isAdding ? parts[parts.length - 1] : null;
@@ -59,15 +60,15 @@ const SidebarDesktop = ({setSidebarOpen} : { setSidebarOpen: (val: boolean) => v
                 <div className="relative flex flex-col gap-10">
 
                     <div>
-                        <ProgressBar/>
+                        <ProgressBar errors={errors}/>
                     </div>
 
                     <div className="flex flex-col gap-4">
                         <div className="flex flex-col gap-2">
-                            <h4 className="font-inter font-semibold text-sm">Wymagane</h4>
-                            <hr className="border-black border-1 opacity-80" />
+                            <h4 className="font-inter font-medium text-md">Kategorie</h4>
+                            <hr className="border-black border-1 opacity-50" />
                         </div>
-                        <div className="flex flex-col gap-[15px]">
+                        <div className="flex flex-col gap-4">
                             {componentsPossible.map((component) => (
 
                                     <ComponentButton
@@ -75,7 +76,10 @@ const SidebarDesktop = ({setSidebarOpen} : { setSidebarOpen: (val: boolean) => v
                                         type={component.type}
                                         isActive={type === component.type}
                                         isAdded={addedTypes.has(component.type)}
-                                        onClick={() => handleClick(component.type)}>
+                                        onClick={() => handleClick(component.type)}
+                                        hasError={errors.some(e => e.components?.some(c => c.type === component.type))}
+                                    >
+
                                         {component.label}
                                     </ComponentButton>
 
@@ -95,7 +99,7 @@ const SidebarDesktop = ({setSidebarOpen} : { setSidebarOpen: (val: boolean) => v
                     </button>
 
                     <div className="flex flex-col gap-10">
-                        <ProgressBar/>
+                        <ProgressBar errors={errors}/>
 
                         <div className="flex flex-col gap-4">
                             <div className="flex flex-col gap-[15px]">
@@ -110,7 +114,7 @@ const SidebarDesktop = ({setSidebarOpen} : { setSidebarOpen: (val: boolean) => v
                                     </div>
                                 </button>
 
-                                {/* Usuń zestaw (AlertDialog) */}
+
                                 <AlertDialog>
                                     <AlertDialogTrigger asChild>
                                         <button className="px-4 py-3 rounded-2xl w-full bg-white">
@@ -149,7 +153,7 @@ const SidebarDesktop = ({setSidebarOpen} : { setSidebarOpen: (val: boolean) => v
                     <Link
                         href="/konfiguracja/nowa/dodaj"
                         onClick={() => setSidebarOpen(false)}
-                        className="w-full flex justify-center items-center bg-[#0071C5] py-3 rounded-full text-white"
+                        className=" md:max-w-[214px] w-full flex justify-center items-center bg-[#0071C5] py-3 rounded-full text-white md:fixed md:bottom-3 md:left-4"
                     >
                         <div className="text-center">Edytuj</div>
                     </Link>

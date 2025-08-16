@@ -17,6 +17,9 @@ const BuildNavbar = ({setSidebarOpen} : { setSidebarOpen: (val: boolean) => void
     const totalPrice  = useBuildStore((s) => s.totalPrice)
     const user = useUserStore(state => state.user)
     const [open, setOpen] = useState(false)
+    const errors = useBuildStore((s) => s.errors)
+    const filtredErrors = errors?.filter(error => error.type === 'incompatible')
+    const hasErrors = filtredErrors && filtredErrors.length > 0
 
 
     async function handleLogout() {
@@ -74,17 +77,25 @@ const BuildNavbar = ({setSidebarOpen} : { setSidebarOpen: (val: boolean) => void
                         )}
 
                 </div>
-                <div className="basis-full max-md:w-ful mt-4 flex flex-row items-center gap-4 md:hidden">
+                <div className="basis-full max-md:w-full mt-4 flex justify-between flex-row items-center gap-4 md:hidden">
                     <div className="hamburger-menu">
                         <button onClick={() => setSidebarOpen(true)}><Image src="/menu.svg" alt="menu" width={33} height={33} className="opacity-75"/></button>
                     </div>
-                    <div className=" px-3 py-2 group bg-white w-full flex rounded-xl border border-gray-50 focus-within:border-2 focus-within:border-gray-500 transition-colors duration-200 ">
-                        <input
-                            placeholder="Wyszukaj"
-                            className=" w-full rounded-xl outline-none"
-                        />
-                        <Image src="/search.svg" alt="search" width={24} height={24} className="opacity-75" />
-                    </div>
+                    {hasErrors ? (
+                        <div className="flex flex-row gap-2 bg-white px-2 py-1.5 rounded-xl justify-between shadow-md">
+                            <Image src="/error.svg" alt="error" width={24} height={24}/>
+                            <h3>Nie Kompatybilne</h3>
+                        </div>
+                    ) : (
+                        <div className=" px-3 py-2 group bg-white w-full flex rounded-xl border border-gray-50 focus-within:border-2 focus-within:border-gray-500 transition-colors duration-200 ">
+                            <input
+                                placeholder="Wyszukaj"
+                                className=" w-full rounded-xl outline-none"
+                            />
+                            <Image src="/search.svg" alt="search" width={24} height={24} className="opacity-75" />
+                        </div>
+                        )}
+
 
                 </div>
             </div>

@@ -4,7 +4,8 @@ import {NextResponse} from "next/server";
 
 export async function GET(req: Request, context: any){
     try {
-        const type = context.params.type;
+        const params = await context.params;
+        const type = params.type;
 
         const components = await prisma.component.findMany({
             where: {
