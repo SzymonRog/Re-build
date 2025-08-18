@@ -11,8 +11,9 @@ const Page = () => {
     const pathname = usePathname();
     const parts = pathname.split('/');
     const type =  parts[parts.length - 1];
-    const curentPart = useBuildStore(state => state.components.find((c) => c.type === type))
-    const activeId = curentPart?.id || null;
+    const curentComponents = useBuildStore(state => state.components);
+    const activeIds = curentComponents.map(c => c.id);
+
     const [components, setComponents] = useState<PCComponent[]>([]);
     const [isLoading, setIsLoading] = useState(false)
 
@@ -42,9 +43,9 @@ const Page = () => {
 
     const filtredComponents = components.sort(
         (a, b) =>{
-            if(a.id === activeId) return -1;
-            if(b.id === activeId) return 1;
-            return 0;
+            const aActive = activeIds.includes(a.id) ? 0 : 1;
+            const bActive = activeIds.includes(b.id) ? 0 : 1;
+            return aActive - bActive;
         }
     )
 
@@ -61,7 +62,7 @@ const Page = () => {
                         filtredComponents.map((component) => (
                         <ItemCard
                         key={component.id}
-                    isSelected={activeId === component.id}
+                    isSelected={activeIds.includes(component.id)}
                     componentData={component}
                 />
                 ))

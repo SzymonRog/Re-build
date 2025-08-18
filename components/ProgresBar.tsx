@@ -17,7 +17,7 @@ const ProgressBar:React.FC<MyComponentProps> = ({errors}) => {
     return (
         <div className="flex flex-col gap-3">
             <h3 className="font-inter font-medium text-lg">Twój Postęp</h3>
-            <Progress value={percentage} className={`w-full h-[13px] bg-white [&>div]:bg-[#0071C5] rounded-full]${percentage === 100  && "[&>div]:bg-[#2FAE7F]"} ${hasErrors  && "[&>div]:bg-rose-600"}`}/>
+            <Progress value={percentage} className={`w-full h-[11px] bg-white [&>div]:bg-[#0071C5] rounded-full]${percentage === 100  && "[&>div]:bg-[#2FAE7F]"} ${hasErrors  && "[&>div]:bg-rose-600"}`}/>
         </div>
 
 

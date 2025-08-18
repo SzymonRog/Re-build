@@ -9,7 +9,7 @@ const BuildInfo2 = () => {
     const buildName = useBuildStore(state => state.name)
     const setName = useBuildStore((state) => state.setName)
     return (
-        <Card className="bg-primary text-white">
+        <Card className="bg-primary text-white hover:shadow-lg transition duration-300">
             <CardHeader >
                 <div className="flex items-center justify-between ">
                     {isEditingName ? (

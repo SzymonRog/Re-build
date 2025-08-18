@@ -18,7 +18,7 @@ const Compatibility = () => {
     }
 
     return (
-        <Card className="bg-white">
+        <Card className="bg-white hover:shadow-lg transition duration-300">
             <CardHeader>
                 <CardTitle>
                     <div className="flex items-center gap-3">

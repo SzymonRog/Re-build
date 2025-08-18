@@ -1,15 +1,16 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import {validateBuild} from "@/lib/validateBuild";
+import {JsonValue} from "@prisma/client/runtime/library";
 
 export type PCComponent = {
     id: string
     type: string
     name: string
-    description: Record<string, any>,
-    specs: Record<string, any>,
+    description: JsonValue,
+    specs: JsonValue,
     price: number
-    imageUrl?: string
+    imageUrl: string | null
 }
 
 export type ValidationError = {

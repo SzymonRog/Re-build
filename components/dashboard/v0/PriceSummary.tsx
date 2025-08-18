@@ -8,7 +8,7 @@ const PriceSummary = () => {
     const components = useBuildStore(state => state.components)
     const totalPrice = useBuildStore(state => state.totalPrice)
     return (
-        <Card className="bg-white">
+        <Card className="bg-white hover:shadow-lg transition duration-300">
             <CardHeader>
                 <CardTitle>Podsumowanie cen</CardTitle>
             </CardHeader>

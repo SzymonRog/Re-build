@@ -15,11 +15,12 @@ import {
 
 import ComponentButton from "@/components/ComponentButton";
 
-import {usePathname,useRouter} from 'next/navigation';
+import {redirect, usePathname, useRouter} from 'next/navigation';
 import Link from "next/link";
 import Image from "next/image";
 import {useBuildStore} from "@/store/buildStore";
 import ProgressBar from "@/components/ProgresBar";
+import { ArrowLeft } from 'lucide-react';
 
 
 
@@ -55,10 +56,18 @@ const SidebarDesktop = ({setSidebarOpen} : { setSidebarOpen: (val: boolean) => v
     return (
         <>
         {isAdding ? (
-            <div className="bg-[#E2E8F0] relative max-sm:px-10 md:px-4 px-15 md:py-4  py-15 flex flex-col gap-4  w-full h-screen justify-between overflow-y-auto">
+            <aside className="bg-[#E2E8F0] relative max-sm:px-10 md:px-4 px-15 md:py-4  py-15 flex flex-col gap-4  w-full min-h-screen justify-between overflow-y-auto">
                 <button onClick={() => setSidebarOpen(false)} className="absolute top-7 right-15 md:hidden"><Image src={"/X.svg"} alt="X" width={25} height={25}/></button>
-                <div className="relative flex flex-col gap-10">
-
+                <div className="relative flex flex-col gap-5">
+                    <button
+                        onClick={() => {
+                            setSidebarOpen(false)
+                            redirect('/konfiguracja/nowa')
+                        }}
+                        className="flex flex-row gap-2 items-center hover:text-white hover:bg-[#6398e3] p-1.5 rounded-xl transition">
+                        <ArrowLeft className="w-5 h-5"/>
+                        <h4 className="text-md">Podsumowanie</h4>
+                    </button>
                     <div>
                         <ProgressBar errors={errors}/>
                     </div>
@@ -69,6 +78,14 @@ const SidebarDesktop = ({setSidebarOpen} : { setSidebarOpen: (val: boolean) => v
                             <hr className="border-black border-1 opacity-50" />
                         </div>
                         <div className="flex flex-col gap-4">
+                            <ComponentButton
+                                type='any'
+                                isActive={type === 'any'}
+                                isAdded={addedTypes.has('any')}
+                                onClick={() => handleClick('any')}
+                            >
+                                Wszystkie kategorie
+                            </ComponentButton>
                             {componentsPossible.map((component) => (
 
                                     <ComponentButton
@@ -88,76 +105,103 @@ const SidebarDesktop = ({setSidebarOpen} : { setSidebarOpen: (val: boolean) => v
                     </div>
                 </div>
 
-                    <Link href="/konfiguracja/nowa" onClick={() => setSidebarOpen(false)} className="md:max-w-[214px] w-full flex justify-center  items-center bg-[#0071C5]  py-3 rounded-full text-white md:fixed md:bottom-3 md:left-4"><div className="text-center">Podsumowanie</div></Link>
+                <Link
+                    href="/konfiguracja/nowa"
+                    onClick={() => setSidebarOpen(false)}
+                    className="
+                    md:max-w-[214px] w-full
+                    flex justify-center items-center
+                    bg-[#0071C5] text-white font-medium
+                    py-2 px-3 rounded-full
+                    shadow-md
+                    transition-all duration-300
+                    hover:bg-[#005a9e] hover:shadow-lg hover:scale-[1.03]
+                    active:scale-[0.97] active:bg-[#004c82]
+                    focus:outline-none focus:ring-2 focus:ring-[#0071C5]/50
+                    fixed bottom-3 left-4"
+                >
+                    <span className="text-center">Podsumowanie</span>
+                </Link>
 
-            </div>)
+            </aside>)
             :
-            (
-                <div className="bg-[#E2E8F0] relative md:px-4 px-15 md:py-5 py-20 flex flex-col gap-4 w-full h-screen justify-between">
-                    <button onClick={() => setSidebarOpen(false)} className="absolute top-7 right-15 md:hidden">
-                        <Image src={"/X.svg"} alt="X" width={25} height={25} />
-                    </button>
-
-                    <div className="flex flex-col gap-10">
-                        <ProgressBar errors={errors}/>
-
-                        <div className="flex flex-col gap-4">
-                            <div className="flex flex-col gap-[15px]">
-                                {/* Dodaj komponenty */}
-                                <button
-                                    className="px-4 py-3 rounded-2xl w-full bg-white"
-                                    onClick={() => router.push('/konfiguracja/nowa/dodaj')}
-                                >
-                                    <div className="flex justify-start gap-2 items-center md:text-start text-center">
-                                        <Image src="/add_icon.svg" alt="add icon" width={24} height={24} />
-                                        <h3 className="w-full">Dodaj komponenty</h3>
-                                    </div>
-                                </button>
-
-
-                                <AlertDialog>
-                                    <AlertDialogTrigger asChild>
-                                        <button className="px-4 py-3 rounded-2xl w-full bg-white">
-                                            <div className="flex justify-start gap-5 items-center md:text-start text-center">
-                                                <Image src="/trashIcon.svg" alt="add icon" width={24} height={24} />
-                                                <h3 className="w-full">Usuń zestaw</h3>
-                                            </div>
-                                        </button>
-                                    </AlertDialogTrigger>
-                                    <AlertDialogContent>
-                                        <AlertDialogHeader>
-                                            <AlertDialogTitle>Potwierdź usunięcie buildu</AlertDialogTitle>
-                                            <AlertDialogDescription>
-                                                Na pewno chcesz usunąć cały build? Tej operacji nie da się cofnąć.
-                                            </AlertDialogDescription>
-                                        </AlertDialogHeader>
-                                        <AlertDialogFooter>
-                                            <AlertDialogCancel>Anuluj</AlertDialogCancel>
-                                            <AlertDialogAction
-                                                className="bg-red-600 text-white px-4 py-2 rounded-md"
-                                                onClick={() => {
-                                                    clearBuild()
-                                                    setSidebarOpen(false)
-                                                }}
-                                            >
-                                                Usuń
-                                            </AlertDialogAction>
-                                        </AlertDialogFooter>
-                                    </AlertDialogContent>
-                                </AlertDialog>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Edytuj link */}
-                    <Link
-                        href="/konfiguracja/nowa/dodaj"
-                        onClick={() => setSidebarOpen(false)}
-                        className=" md:max-w-[214px] w-full flex justify-center items-center bg-[#0071C5] py-3 rounded-full text-white md:fixed md:bottom-3 md:left-4"
-                    >
-                        <div className="text-center">Edytuj</div>
-                    </Link>
-                </div>)}
+            (<></>
+                // <aside className="bg-[#E2E8F0] relative md:px-4 px-15 md:py-5 py-20 flex flex-col gap-4 w-full min-h-screen justify-between">
+                //     <button onClick={() => setSidebarOpen(false)} className="absolute top-7 right-15 md:hidden">
+                //         <Image src={"/X.svg"} alt="X" width={25} height={25} />
+                //     </button>
+                //
+                //     <div className="flex flex-col gap-10">
+                //         <ProgressBar errors={errors}/>
+                //
+                //         <div className="flex flex-col gap-4">
+                //             <div className="flex flex-col gap-[15px]">
+                //                 {/* Dodaj komponenty */}
+                //                 <button
+                //                     className="px-3 py-2 rounded-xl w-full bg-white "
+                //                     onClick={() => router.push('/konfiguracja/nowa/dodaj')}
+                //                 >
+                //                     <div className="flex justify-start gap-2 items-center md:text-start text-center">
+                //                         <Image src="/add_icon.svg" alt="add icon" width={24} height={24} />
+                //                         <h3 className="w-full">Dodaj komponenty</h3>
+                //                     </div>
+                //                 </button>
+                //
+                //
+                //                 <AlertDialog>
+                //                     <AlertDialogTrigger asChild>
+                //                         <button className="px-3 py-2 rounded-xl w-full bg-white text-rose-700">
+                //                             <div className="flex justify-start gap-5 items-center md:text-start text-center">
+                //                                 <Image src="/trashIcon.svg" alt="add icon" width={24} height={24} />
+                //                                 <h3 className="w-full">Usuń zestaw</h3>
+                //                             </div>
+                //                         </button>
+                //                     </AlertDialogTrigger>
+                //                     <AlertDialogContent>
+                //                         <AlertDialogHeader>
+                //                             <AlertDialogTitle>Potwierdź usunięcie buildu</AlertDialogTitle>
+                //                             <AlertDialogDescription>
+                //                                 Na pewno chcesz usunąć cały build? Tej operacji nie da się cofnąć.
+                //                             </AlertDialogDescription>
+                //                         </AlertDialogHeader>
+                //                         <AlertDialogFooter>
+                //                             <AlertDialogCancel>Anuluj</AlertDialogCancel>
+                //                             <AlertDialogAction
+                //                                 className="bg-red-600 text-white px-4 py-2 rounded-md"
+                //                                 onClick={() => {
+                //                                     clearBuild()
+                //                                     setSidebarOpen(false)
+                //                                 }}
+                //                             >
+                //                                 Usuń
+                //                             </AlertDialogAction>
+                //                         </AlertDialogFooter>
+                //                     </AlertDialogContent>
+                //                 </AlertDialog>
+                //             </div>
+                //         </div>
+                //     </div>
+                //
+                //     {/* Edytuj link */}
+                //     <Link
+                //         href="/konfiguracja/nowa/dodaj"
+                //         onClick={() => setSidebarOpen(false)}
+                //         className="
+                //     md:max-w-[214px] w-full
+                //     flex justify-center items-center
+                //     bg-[#0071C5] text-white font-medium
+                //     py-2 px-3 rounded-full
+                //     shadow-md
+                //     transition-all duration-300
+                //     hover:bg-[#005a9e] hover:shadow-lg hover:scale-[1.03]
+                //     active:scale-[0.97] active:bg-[#004c82]
+                //     focus:outline-none focus:ring-2 focus:ring-[#0071C5]/50
+                //     fixed bottom-3 left-4"
+                //     >
+                //         <span className="text-center">Edytuj</span>
+                //     </Link>
+                // </aside>
+            )}
         </>
     )
 }

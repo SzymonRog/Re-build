@@ -19,7 +19,7 @@ const ItemCard = ({componentData,isSelected}: ItemCardProps) => {
     }
 
     return (
-        <div className={`bg-white rounded-xl flex flex-row justify-between gap-5 pr-4 pl-0 lg:pr-20 lg:pl-12 py-4 drop-shadow-sm w-full max-w-[1000px] ${isSelected ? 'border-[2] border-[#80B8E2]' : ''}`}>
+        <div className={`bg-white rounded-xl flex flex-row justify-between gap-5 pr-4 pl-0 lg:pr-20 lg:pl-12 py-4 shadow-md w-full max-w-[1000px] hover:shadow-xl transition duration-300 ${isSelected ? 'border-[2] border-[#80B8E2]' : ''}`}>
             <Image src={imageUrl || ""} alt={name} width={150} height={150} className="sm:hidden object-contain"/>
             <div className="flex sm:flex-row flex-col justify-center sm:justify-between sm:items-center items-start sm:gap-4 gap-8 w-full">
                 <div className="flex sm:flex-row gap-8 sm:items-center">
@@ -27,11 +27,16 @@ const ItemCard = ({componentData,isSelected}: ItemCardProps) => {
                     <div className="flex flex-col justify-center gap-3">
                         <h2 className="font-satoshi font-medium  text-xl">{name}</h2>
                         <ul>
-                            {Object.entries(description).map(([key, value]) => (
-                                <li key={key} className="text-md opacity-75">
-                                    <span className="text-sm">{key}</span>: {value}
-                                </li>
-                            ))}
+                            {description && typeof description === "object" && !Array.isArray(description) && (
+                                <ul>
+                                    {Object.entries(description).map(([key, value]) => (
+                                        <li key={key} className="text-md opacity-100">
+                                            <span className="text-sm opacity-75">{key}</span>: {String(value)}
+                                        </li>
+                                    ))}
+                                </ul>
+                            )}
+
                         </ul>
                     </div>
                 </div>
@@ -41,14 +46,19 @@ const ItemCard = ({componentData,isSelected}: ItemCardProps) => {
 
 
                     <button
-                        onClick={() => addComponentToBuild(componentData)}
-                        className="
+                        onClick={() => {
+                            if(isSelected) return;
+                            else addComponentToBuild(componentData);
+                            return;
+                        }}
+                        className={`
                         bg-[#0071C5] text-white rounded-2xl px-10 py-2 font-satoshi
                         lg:text-lg sm:text-md text-md font-medium
                         transition
                         hover:bg-[#005a9e] hover:shadow-md
                         active:bg-[#003d6b] active:scale-95
-                        focus:outline-none focus:ring-2 focus:ring-[#005a9e] focus:ring-offset-2">
+                        ${isSelected ? 'opacity-50 cursor-not-allowed': ''}
+                        focus:outline-none focus:ring-2 focus:ring-[#005a9e] focus:ring-offset-2`}>
                         Dodaj
                     </button>
                 </div>
