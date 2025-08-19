@@ -20,11 +20,13 @@ export type ValidationError = {
 }
 
 export type BuildState = {
+    buildId: string | null
     name: string
     components: PCComponent[]
     totalPrice: number
     errors: ValidationError[]
 
+    setBuildId: (id: string | null) => void
     setName: (name: string) => void
     addComponent: (component: PCComponent) => void
     removeComponent: (componentId: string) => void
@@ -32,7 +34,11 @@ export type BuildState = {
     calculateTotal: () => void
     validateBuild: () => void
 }
-
+export type BuildSaveData ={
+    name: string
+    components: PCComponent[]
+    totalPrice: number
+}
 
 export const useBuildStore = create<BuildState>()(
     persist(
@@ -41,6 +47,8 @@ export const useBuildStore = create<BuildState>()(
             components: [],
             totalPrice: 0,
             errors: [],
+            buildId: null,
+            setBuildId: (id) => set({ buildId: id }),
             setName: (name) => set({ name }),
             addComponent: (newComponent) => {
                 const currentComponents = get().components;

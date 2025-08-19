@@ -4,10 +4,13 @@ import {PCComponent, useBuildStore} from "@/store/buildStore";
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
 import {Separator} from "@/components/ui/separator";
 import {cn} from "tailwind-variants";
+import {AlertTriangle} from "lucide-react";
 
 const Compatibility = () => {
     const errors = useBuildStore(state => state.errors)
     const errorsCount = errors.length
+    const misingComponents = errors.filter(e => e.type === 'missing_component')
+    const misingComponentsCount = misingComponents.length
 
     function  formatErrorMessage(message:string, components:PCComponent[] = []){
         let formatted = message;
@@ -22,15 +25,17 @@ const Compatibility = () => {
             <CardHeader>
                 <CardTitle>
                     <div className="flex items-center gap-3">
-                        {errorsCount ? (<Image src='/error.svg' alt='error icon' width={24} height={24}/>) : (<Image src="/check.svg" alt="checkmark" width={34} height={34}/>)}
-                        <p className="text-2xl">{errorsCount ? 'Nie Kompatybilne' : 'Kompatybilne'}</p>
+                        { misingComponentsCount && misingComponentsCount == errorsCount ? (<AlertTriangle className="h-7 w-7 text-[#F59E0B]" />) : errorsCount ? (<Image src='/error.svg' alt='error icon' width={24} height={24}/>) : (<Image src="/check.svg" alt="checkmark" width={34} height={34}/>)}
+                        <p className="text-2xl">{ misingComponentsCount && misingComponentsCount == errorsCount ? 'Brak Podzespołów' :  errorsCount ? 'Nie Kompatybilne' : 'Kompatybilne'}</p>
                     </div>
 
                 </CardTitle>
                 <CardDescription>
-                    {errorsCount ?
-                        'Któryś z komponentów nie pasuje do reszty' :
+                    {misingComponentsCount && misingComponentsCount == errorsCount ? 'Twoja konfiguracja ma brakujace cześci' : errorsCount ? 'Któryś z komponentów nie pasuje do reszty' :
                         'Wszystkie twoje podzespoły są kompatybilne'}
+                    {/*{errorsCount ?*/}
+                    {/*    'Któryś z komponentów nie pasuje do reszty' :*/}
+                    {/*    'Wszystkie twoje podzespoły są kompatybilne'}*/}
 
                 </CardDescription>
                 {errorsCount ? (<Separator className="mt-2 bg-gray-400"/>) : <></>}

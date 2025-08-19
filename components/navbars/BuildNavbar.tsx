@@ -7,19 +7,26 @@ import Link from "next/link";
 import {useUserStore} from "@/store/user";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import {toast} from "sonner";
+import {usePathname} from "next/navigation";
 
 
 
 
 
 const BuildNavbar = ({setSidebarOpen} : { setSidebarOpen: (val: boolean) => void }) => {
+
+    const pathname = usePathname();
+    const isAdding = pathname.includes('/dodaj');
+
     const name = useBuildStore((s) => s.name)
     const totalPrice  = useBuildStore((s) => s.totalPrice)
     const user = useUserStore(state => state.user)
-    const [open, setOpen] = useState(false)
+
     const errors = useBuildStore((s) => s.errors)
     const filtredErrors = errors?.filter(error => error.type === 'incompatible')
     const hasErrors = filtredErrors && filtredErrors.length > 0
+
+    const [open, setOpen] = useState(false)
     const [hasScrolled, setHasScrolled] = useState(true)
     const [atTop, setAtTop] = useState(true);
     const lastScrollY = useRef(0)
@@ -117,7 +124,14 @@ const BuildNavbar = ({setSidebarOpen} : { setSidebarOpen: (val: boolean) => void
                                                                                 height={33} className="opacity-75"/>
                             </button>
                         </div>
-                        {hasErrors ? (
+                        {isAdding ? (<div
+                            className=" px-3 py-2 group bg-white w-full flex rounded-xl border border-gray-50 focus-within:border-2 focus-within:border-gray-500 transition-colors duration-200 ">
+                            <input
+                                placeholder="Wyszukaj"
+                                className=" w-full rounded-xl outline-none"
+                            />
+                            <Image src="/search.svg" alt="search" width={24} height={24} className="opacity-75"/>
+                        </div>) : hasErrors ? (
                             <div
                                 className="flex flex-row gap-2 bg-white px-2 py-1.5 rounded-xl justify-between shadow-md">
                                 <Image src="/error.svg" alt="error" width={24} height={24}/>
@@ -125,12 +139,9 @@ const BuildNavbar = ({setSidebarOpen} : { setSidebarOpen: (val: boolean) => void
                             </div>
                         ) : (
                             <div
-                                className=" px-3 py-2 group bg-white w-full flex rounded-xl border border-gray-50 focus-within:border-2 focus-within:border-gray-500 transition-colors duration-200 ">
-                                <input
-                                    placeholder="Wyszukaj"
-                                    className=" w-full rounded-xl outline-none"
-                                />
-                                <Image src="/search.svg" alt="search" width={24} height={24} className="opacity-75"/>
+                                className="flex flex-row gap-2 bg-white px-2 py-1.5 rounded-xl justify-between shadow-md">
+                                <Image src="/check.svg" alt="error" width={24} height={24}/>
+                                <h3>Wszytsko Kompatybilne</h3>
                             </div>
                         )}
 

@@ -28,8 +28,8 @@ model User {
 model Build{
   id  String @id @default(uuid())
   userId String?
-  name String
-  totalPrice Float
+  name String  @default("Nowy build")
+  totalPrice Float  @default(0.0)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
