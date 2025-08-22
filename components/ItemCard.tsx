@@ -2,6 +2,7 @@ import React from 'react'
 import Image from "next/image";
 import {PCComponent, useBuildStore} from "@/store/buildStore";
 import { toast } from "sonner"
+import {useBuildData} from "@/hooks/useBuildData";
 
 type ItemCardProps = {
     componentData: PCComponent
@@ -10,7 +11,7 @@ type ItemCardProps = {
 
 const ItemCard = ({componentData,isSelected}: ItemCardProps) => {
     const {imageUrl, name, price, description} = componentData;
-    const addComponent = useBuildStore(state => state.addComponent)
+    const addComponent = useBuildData().addComponent
     function addComponentToBuild(component:PCComponent){
         addComponent(component)
         toast("Dodano komponent", {

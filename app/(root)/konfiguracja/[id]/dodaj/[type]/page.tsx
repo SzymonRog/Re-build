@@ -5,13 +5,14 @@ import {usePathname} from "next/navigation";
 import ItemCard from "@/components/ItemCard";
 import {PCComponent, useBuildStore} from "@/store/buildStore";
 import {ItemCardSkeleton} from "@/components/skeletons/ItemCardSkeleton";
+import {useBuildData} from "@/hooks/useBuildData";
 
 const Page = () => {
 
     const pathname = usePathname();
     const parts = pathname.split('/');
     const type =  parts[parts.length - 1];
-    const curentComponents = useBuildStore(state => state.components);
+    const curentComponents =  useBuildData().components;
     const activeIds = curentComponents.map(c => c.id);
 
     const [components, setComponents] = useState<PCComponent[]>([]);

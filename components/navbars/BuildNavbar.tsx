@@ -8,6 +8,7 @@ import {useUserStore} from "@/store/user";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import {toast} from "sonner";
 import {usePathname} from "next/navigation";
+import {useBuildData} from "@/hooks/useBuildData";
 
 
 
@@ -18,11 +19,11 @@ const BuildNavbar = ({setSidebarOpen} : { setSidebarOpen: (val: boolean) => void
     const pathname = usePathname();
     const isAdding = pathname.includes('/dodaj');
 
-    const name = useBuildStore((s) => s.name)
-    const totalPrice  = useBuildStore((s) => s.totalPrice)
+    const name = useBuildData().name
+    const totalPrice  = useBuildData().totalPrice
     const user = useUserStore(state => state.user)
 
-    const errors = useBuildStore((s) => s.errors)
+    const errors = useBuildData().errors
     const filtredErrors = errors?.filter(error => error.type === 'incompatible')
     const hasErrors = filtredErrors && filtredErrors.length > 0
 

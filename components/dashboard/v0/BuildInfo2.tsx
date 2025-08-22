@@ -4,10 +4,11 @@ import {Input} from "@/components/ui/input";
 import {Button} from "@/components/ui/button";
 import {CheckCircle, Edit3} from "lucide-react";
 import {useBuildStore} from "@/store/buildStore";
+import {useBuildData} from "@/hooks/useBuildData";
 const BuildInfo2 = () => {
     const [isEditingName, setIsEditingName] = useState(false)
-    const buildName = useBuildStore(state => state.name)
-    const setName = useBuildStore((state) => state.setName)
+    const buildName = useBuildData().name
+    const setName =  useBuildData().setName
     return (
         <Card className="bg-primary text-white hover:shadow-lg transition duration-300">
             <CardHeader >

@@ -7,6 +7,10 @@ import {useBuildStore} from "@/store/buildStore";
 import {useUserStore} from "@/store/user";
 import {toast} from "sonner";
 import {Skeleton} from "@/components/ui/skeleton";
+import {updateBuild} from "@/lib/updateBuild";
+import {useAutoSaveBuild} from "@/hooks/useAutoSaveBuild";
+import {useBuildData} from "@/hooks/useBuildData";
+import {redirect} from "next/navigation";
 
 
 
@@ -18,13 +22,14 @@ const ActionBar = () => {
     const totalPrice = useBuildStore(state => state.totalPrice)
     const setBuildId = useBuildStore(state => state.setBuildId)
     const buildId = useBuildStore(state => state.buildId)
+    const buildIdDisplay = useBuildData().buildId
 
     const [isLoading, setIsLoading] = useState(false)
     const [copied, setCopied] = useState(false)
     const user = useUserStore(state => state.user)
 
-    const buildURL = `http://localhost:3000/konfiguracja/${buildId}`
-
+    const buildURL = `http://localhost:3000/konfiguracja/${buildIdDisplay}`
+    useAutoSaveBuild(buildId, componentsIds)
     async function handleSave(){
 
         try {
@@ -35,27 +40,41 @@ const ActionBar = () => {
             if(componentsIds.length === 0){
                 return toast('Brak komponentów w konfiguracji')
             }
-            setIsLoading(true)
-            const response = await fetch(`/api/save/build`,
-                {
-                    method: 'POST',
-                    body: JSON.stringify({
-                        name,
-                        componentsIds,
-                        totalPrice
-                    })}
-            )
-            const data = await response.json()
-            setIsLoading(false)
-            if(data.success){
-                setBuildId(data.data.id)
+
+
+            if(!buildId){
+                setIsLoading(true)
+                const response = await fetch(`/api/save/build`,
+                    {
+                        method: 'POST',
+                        body: JSON.stringify({
+                            name,
+                            componentsIds,
+                            totalPrice
+                        })}
+                )
+                const data = await response.json()
+                setIsLoading(false)
+                if(data.success){
+                    const URL = `http://localhost:3000/konfiguracja/${data.data.id}`
+                    setBuildId(data.data.id)
+                    toast("Build zapisany ✅");
+                    redirect(URL)
+                }else{
+                    console.error(data.error)
+                    toast.error("Nie udało się zapisać builda");
+                }
             }else{
-                console.error(data.error)
+                const success = await updateBuild(buildId, componentsIds)
+                if (success) toast("Build zaktualizowany ✅");
+
             }
 
+
         }catch (e) {
+            setIsLoading(false)
             console.error(e)
-            toast('Wystapil blad podczas zapisywania konfiguracji')
+            toast.error('Wystąpił błąd podczas zapisywania konfiguracji');
         }
     }
 
@@ -83,7 +102,7 @@ const ActionBar = () => {
                             </div>
                         </div>
                         <hr className="w-[1.25px] bg-black rotate-180  h-5"/>
-                        {isLoading ? <Skeleton className={"w-120 bg-secondary h-3 rounded-sm opacity-40"}/> : <p className="text-gray-600">{buildId ? buildURL : 'Zapisz swoją konfiguracjie aby podzielić się nią ze wszystkimi'}</p>}
+                        {isLoading ? <Skeleton className={"w-120 bg-secondary h-3 rounded-sm opacity-40"}/> : <p className="text-gray-600">{buildIdDisplay ? buildURL : 'Zapisz swoją konfiguracjie aby podzielić się nią ze wszystkimi'}</p>}
 
                     </div>
                     <div className="flex gap-2 items-center justify-end">

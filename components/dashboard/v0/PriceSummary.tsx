@@ -2,11 +2,12 @@ import React from 'react'
 import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
 import {Separator} from "@/components/ui/separator";
 import {useBuildStore} from "@/store/buildStore";
+import {useBuildData} from "@/hooks/useBuildData";
 
 
 const PriceSummary = () => {
-    const components = useBuildStore(state => state.components)
-    const totalPrice = useBuildStore(state => state.totalPrice)
+    const components = useBuildData().components
+    const totalPrice = useBuildData().totalPrice
     return (
         <Card className="bg-white hover:shadow-lg transition duration-300">
             <CardHeader>

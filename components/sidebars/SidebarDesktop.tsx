@@ -15,12 +15,13 @@ import {
 
 import ComponentButton from "@/components/ComponentButton";
 
-import {redirect, usePathname, useRouter} from 'next/navigation';
+import {redirect, useParams, usePathname, useRouter} from 'next/navigation';
 import Link from "next/link";
 import Image from "next/image";
 import {useBuildStore} from "@/store/buildStore";
 import ProgressBar from "@/components/ProgresBar";
 import { ArrowLeft } from 'lucide-react';
+import {useBuildData} from "@/hooks/useBuildData";
 
 
 
@@ -39,18 +40,22 @@ const componentsPossible = [
 const SidebarDesktop = ({setSidebarOpen} : { setSidebarOpen: (val: boolean) => void }) => {
     const router = useRouter();
     const pathname = usePathname();
+    const params = useParams();
+    const buildId = params.id;
     const isAdding = pathname.includes('/dodaj');
-    const clearBuild = useBuildStore(state => state.clearBuild)
-    const components = useBuildStore(state => state.components)
+    const clearBuild = useBuildData().clearBuild
+    const components = useBuildData().components
     const addedTypes = new Set(components.map(c => c.type))
-    const errors = useBuildStore(state => state.errors)
+    const errors = useBuildData().errors
 
     const parts = pathname.split('/');
     const type = isAdding ? parts[parts.length - 1] : null;
+    console.log(buildId)
 
     function handleClick(type:string){
+        const URL = `/konfiguracja/${buildId ? buildId : 'nowa'}/dodaj/${type}`
         setSidebarOpen(false);
-        router.push('/konfiguracja/nowa/dodaj/' + type)
+        router.push(URL)
         return 0;
     }
     return (
@@ -62,7 +67,7 @@ const SidebarDesktop = ({setSidebarOpen} : { setSidebarOpen: (val: boolean) => v
                     <button
                         onClick={() => {
                             setSidebarOpen(false)
-                            redirect('/konfiguracja/nowa')
+                            redirect(`/konfiguracja/${buildId ? buildId : 'nowa'}`)
                         }}
                         className="flex flex-row gap-2 items-center hover:text-white hover:bg-[#6398e3] p-1.5 rounded-xl transition">
                         <ArrowLeft className="w-5 h-5"/>
@@ -106,7 +111,7 @@ const SidebarDesktop = ({setSidebarOpen} : { setSidebarOpen: (val: boolean) => v
                 </div>
 
                 <Link
-                    href="/konfiguracja/nowa"
+                    href={`/konfiguracja/${buildId ? buildId : 'nowa'}`}
                     onClick={() => setSidebarOpen(false)}
                     className="
                     md:max-w-[214px] w-full
@@ -139,7 +144,7 @@ const SidebarDesktop = ({setSidebarOpen} : { setSidebarOpen: (val: boolean) => v
                                 {/* Dodaj komponenty */}
                                 <button
                                     className="px-3 py-2 rounded-xl w-full bg-white "
-                                    onClick={() => router.push('/konfiguracja/nowa/dodaj')}
+                                    onClick={() => handleClick('any')}
                                 >
                                     <div className="flex justify-start gap-2 items-center md:text-start text-center">
                                         <Image src="/add_icon.svg" alt="add icon" width={24} height={24} />
@@ -184,7 +189,7 @@ const SidebarDesktop = ({setSidebarOpen} : { setSidebarOpen: (val: boolean) => v
 
                     {/* Edytuj link */}
                     <Link
-                        href="/konfiguracja/nowa/dodaj"
+                        href={`/konfiguracja/${buildId ? buildId : 'nowa'}/dodaj`}
                         onClick={() => setSidebarOpen(false)}
                         className="
                     md:max-w-[214px] w-full

@@ -5,9 +5,10 @@ import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/compo
 import {Separator} from "@/components/ui/separator";
 import {cn} from "tailwind-variants";
 import {AlertTriangle} from "lucide-react";
+import {useBuildData} from "@/hooks/useBuildData";
 
 const Compatibility = () => {
-    const errors = useBuildStore(state => state.errors)
+    const errors = useBuildData().errors
     const errorsCount = errors.length
     const misingComponents = errors.filter(e => e.type === 'missing_component')
     const misingComponentsCount = misingComponents.length

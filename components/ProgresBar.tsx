@@ -2,12 +2,13 @@ import React from 'react'
 import { Progress } from "@/components/ui/progress"
 import {useBuildStore,ValidationError} from "@/store/buildStore";
 import {cn} from "@/lib/utils";
+import {useBuildData} from "@/hooks/useBuildData";
 type MyComponentProps = {
     errors: ValidationError[];
 }
 
 const ProgressBar:React.FC<MyComponentProps> = ({errors}) => {
-    const components = useBuildStore(state => state.components)
+    const components = useBuildData().components
     const totalRequired = 8
     const uniqueTypes = new Set(components.map(component => component.type))
     const filled = uniqueTypes.size

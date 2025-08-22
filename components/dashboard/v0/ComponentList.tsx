@@ -19,6 +19,8 @@ import {
     Share2, Plus,
 } from "lucide-react"
 import Link from "next/link";
+import {useBuildData} from "@/hooks/useBuildData";
+import {useParams} from "next/navigation";
 
 
 const categoryIcons = {
@@ -33,15 +35,17 @@ const categoryIcons = {
 }
 
 const ComponentList = () => {
-    const components = useBuildStore(state => state.components)
+    const components =  useBuildData().components
     const desiredOrder = ["cpu","cpuCooler", "motherboard", "ram", "storage", "gpu", "psu", "case"];
-    const removeComponent = useBuildStore(state => state.removeComponent)
+    const removeComponent =  useBuildData().removeComponent
     const sortedComponents = components.slice().sort((a, b) => {
         const indexA = desiredOrder.indexOf(a.type)
         const indexB = desiredOrder.indexOf(b.type);
         return (indexA === -1 ? 999 : indexA) - (indexB === -1 ? 999 : indexB)
     })
-    const errors = useBuildStore(state => state.errors)
+    const params = useParams();
+    const buildId = params.id;
+    const errors = useBuildData().errors
 
     function hasErrors(component:PCComponent) : boolean {
         return errors.some(e => e.components?.some(c => c.type === component.type))
@@ -125,7 +129,7 @@ const ComponentList = () => {
                                     <div className="text-right">
                                         <p className="text-sm text-muted-foreground">-</p>
                                     </div>
-                                    <Link href={`nowa/dodaj/${category}`}>
+                                    <Link href={`${buildId ? buildId : 'nowa'}/dodaj/${category}`}>
                                         <Button variant="outline" size="sm" className="bg-transparent">
                                             Dodaj
                                         </Button>

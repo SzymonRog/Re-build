@@ -25,7 +25,17 @@ export type BuildState = {
     components: PCComponent[]
     totalPrice: number
     errors: ValidationError[]
+    isOwner: boolean
 
+    // Ustawia cały zustand
+    setBuild: (build: {
+        buildId: string | null
+        name: string
+        components: PCComponent[]
+        totalPrice: number
+        errors: ValidationError[]
+    }) => void
+    setIsOwner: (isOwner: boolean) => void
     setBuildId: (id: string | null) => void
     setName: (name: string) => void
     addComponent: (component: PCComponent) => void
@@ -48,6 +58,19 @@ export const useBuildStore = create<BuildState>()(
             totalPrice: 0,
             errors: [],
             buildId: null,
+            isOwner: false,
+
+            setBuild: (build) => {
+                set({
+                    buildId: build.buildId,
+                    name: build.name,
+                    components: build.components,
+                    totalPrice: build.totalPrice,
+                    errors: build.errors
+                });
+                get().validateBuild();
+            },
+            setIsOwner: (isOwner) => set({ isOwner }),
             setBuildId: (id) => set({ buildId: id }),
             setName: (name) => set({ name }),
             addComponent: (newComponent) => {

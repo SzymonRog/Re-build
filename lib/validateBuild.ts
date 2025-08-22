@@ -6,6 +6,14 @@ type ValidationError = {
 }
 export  function validateBuild(components:PCComponent[]): ValidationError[] {
     const errors: ValidationError[] = [];
+
+    const validComponents = components.filter(c => c && c.type);
+
+    if (validComponents.length !== components.length) {
+        console.warn('Filtered out invalid components:',
+            components.filter(c => !c || !c.type)
+        );
+    }
     const cpu = components.find(c => c.type === 'cpu');
     const motherboard = components.find(c => c.type === 'motherboard');
     const ram = components.find(c => c.type === 'ram');
@@ -13,6 +21,8 @@ export  function validateBuild(components:PCComponent[]): ValidationError[] {
     const psu = components.find(c => c.type === 'psu');
     const gpu = components.find(c => c.type === 'gpu');
     const pcCase = components.find(c => c.type === 'case');
+
+
 
     const caseCompatiblity: Record<string, string[]> = {
         'eATX': ['ATX', 'mATX', 'ITX','eATX'],
