@@ -29,6 +29,8 @@ export type PreviewBuildState = {
     clearBuild: () => void;
     syncBuild: () => void;
     setIsOwner: (isOwner: boolean) => void;
+    setName: (name: string) => void;
+    calculateTotal: () => void;
 
 };
 

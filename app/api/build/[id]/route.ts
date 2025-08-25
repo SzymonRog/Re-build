@@ -3,8 +3,12 @@ import jwt from "jsonwebtoken";
 import prisma from "@/prisma/client";
 import {NextRequest} from "next/server";
 
-export async function GET(req: NextRequest, { params }: { params: { id: string } }){
+export async function GET(req: NextRequest){
     try {
+        const { searchParams, pathname } = new URL(req.url);
+        const segments = pathname.split("/"); // np. ['', 'api', 'build', '123']
+        const id = segments[segments.length - 1];
+
         let userId: string | null = null;
 
         // token jest opcjonalny
@@ -21,7 +25,6 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
         }
 
         // Await params before accessing its properties
-        const { id } = await params;
 
         const build = await prisma.build.findUnique({
             where: {id},

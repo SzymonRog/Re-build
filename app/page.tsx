@@ -198,8 +198,8 @@ export default function HomePage() {
                                     ))}
                                 </div>
                                 <p className="text-muted-foreground mb-6">
-                                    "Dzięki PC Part Picker zbudowałem swój pierwszy komputer bez żadnych problemów. Sprawdzanie
-                                    kompatybilności oszczędziło mi dużo czasu i pieniędzy."
+                                    &quot;Dzięki PC Part Picker zbudowałem swój pierwszy komputer bez żadnych problemów. Sprawdzanie
+                                    kompatybilności oszczędziło mi dużo czasu i pieniędzy.&quot;
                                 </p>
                                 <div className="flex items-center space-x-3">
                                     <Avatar>
@@ -222,8 +222,8 @@ export default function HomePage() {
                                     ))}
                                 </div>
                                 <p className="text-muted-foreground mb-6">
-                                    "Jako właściciel sklepu komputerowego polecam tę aplikację wszystkim klientom. Znacznie ułatwia dobór
-                                    podzespołów i redukuje reklamacje."
+                                    &quot;Jako właściciel sklepu komputerowego polecam tę aplikację wszystkim klientom. Znacznie ułatwia dobór
+                                    podzespołów i redukuje reklamacje.&quot;
                                 </p>
                                 <div className="flex items-center space-x-3">
                                     <Avatar>
@@ -246,8 +246,8 @@ export default function HomePage() {
                                     ))}
                                 </div>
                                 <p className="text-muted-foreground mb-6">
-                                    "Świetne narzędzie do planowania upgrade'u komputera. Porównanie cen z różnych sklepów pozwoliło mi
-                                    zaoszczędzić ponad 500 złotych!"
+                                    &quot;Świetne narzędzie do planowania upgrade'u komputera. Porównanie cen z różnych sklepów pozwoliło mi
+                                    zaoszczędzić ponad 500 złotych!&quot;
                                 </p>
                                 <div className="flex items-center space-x-3">
                                     <Avatar>

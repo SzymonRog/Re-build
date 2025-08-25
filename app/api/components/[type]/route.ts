@@ -3,8 +3,9 @@ import {NextResponse} from "next/server";
 import {PCComponent} from "@/store/buildStore";
 
 
-export async function GET(req: Request, context: any){
+export async function GET(req: Request, context: { params: { type: string } }){
     try {
+
         const params = await context.params;
         const type = params.type;
         let components: PCComponent[] = []

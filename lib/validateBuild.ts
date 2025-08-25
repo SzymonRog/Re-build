@@ -52,9 +52,11 @@ export  function validateBuild(components:PCComponent[]): ValidationError[] {
         });
     }
 
-
     if (cpu && motherboard) {
-        if (cpu.specs.socket !== motherboard.specs.socket) {
+        const cpuSocket = (cpu.specs as { socket?: string })?.socket;
+        const mbSocket = (motherboard.specs as { socket?: string })?.socket;
+
+        if (cpuSocket && mbSocket && cpuSocket !== mbSocket) {
             errors.push({
                 type: 'incompatible',
                 message: `Procesor (${cpu.name}) i płyta główna (${motherboard.name}) nie są kompatybilne`,
@@ -63,9 +65,12 @@ export  function validateBuild(components:PCComponent[]): ValidationError[] {
         }
     }
 
-    // Sprawdzenie kompatybilności RAM z płytą główną
+// Sprawdzenie kompatybilności RAM z płytą główną
     if (ram && motherboard) {
-        if (ram.specs.type && motherboard.specs.memoryType && !motherboard.specs.memoryType.includes(ram.specs.type)) {
+        const ramType = (ram.specs as { type?: string })?.type;
+        const mbMemType = (motherboard.specs as { memoryType?: string[] })?.memoryType;
+
+        if (ramType && mbMemType && !mbMemType.includes(ramType)) {
             errors.push({
                 type: 'incompatible',
                 message: `Pamięć RAM (${ram.name}) nie jest kompatybilna z płytą główną (${motherboard.name})`,
@@ -74,29 +79,47 @@ export  function validateBuild(components:PCComponent[]): ValidationError[] {
         }
     }
 
-    // Sprawdzenie kompatybilności chłodzenia CPU z procesorem i obudową
+// Sprawdzenie kompatybilności chłodzenia CPU z procesorem i obudową
     if (cooler) {
-        if (cpu && cooler.specs.compatibleSockets && !cooler.specs.compatibleSockets.includes(cpu.specs.socket)) {
+        const coolerSockets = (cooler.specs as { compatibleSockets?: string[] })?.compatibleSockets;
+        const cpuSocket = (cpu?.specs as { socket?: string })?.socket;
+
+        if (cpu && coolerSockets && cpuSocket && !coolerSockets.includes(cpuSocket)) {
             errors.push({
                 type: 'incompatible',
                 message: `Chłodzenie CPU (${cooler.name}) nie jest kompatybilne z procesorem (${cpu.name})`,
                 components: [cooler, cpu],
             });
         }
+
         if (pcCase && motherboard) {
-            if(!caseCompatiblity[pcCase.specs.formFactor].includes(motherboard.specs.formFactor))
-            errors.push({
-                type: 'incompatible',
-                message: `Płyta główna (${motherboard.name}) nie mieśći sie w obudowie (${pcCase.name})`,
-                components: [motherboard, pcCase],
-            });
+            const caseFormFactor = (pcCase.specs as { formFactor?: string })?.formFactor;
+            const mbFormFactor = (motherboard.specs as { formFactor?: string })?.formFactor;
+
+            if (
+                caseFormFactor &&
+                mbFormFactor &&
+                !(caseCompatiblity[caseFormFactor] || []).includes(mbFormFactor)
+            ) {
+                errors.push({
+                    type: 'incompatible',
+                    message: `Płyta główna (${motherboard.name}) nie mieści się w obudowie (${pcCase.name})`,
+                    components: [motherboard, pcCase],
+                });
+            }
         }
     }
 
-    // Sprawdzenie mocy zasilacza
+// Sprawdzenie mocy zasilacza
     if (psu) {
-        const totalTDP = components.reduce((sum, c) => sum + (c.specs.tdp ? parseInt(c.specs.tdp) : 0), 0);
-        if (psu.specs.wattage && totalTDP * 1.2 > parseInt(psu.specs.wattage)) {
+        const psuWattage = parseInt((psu.specs as { wattage?: string })?.wattage || "0");
+
+        const totalTDP = components.reduce((sum, c) => {
+            const tdp = parseInt((c.specs as { tdp?: string })?.tdp || "0");
+            return sum + tdp;
+        }, 0);
+
+        if (psuWattage && totalTDP * 1.2 > psuWattage) {
             errors.push({
                 type: 'incompatible',
                 message: 'Zasilacz nie ma wystarczającej mocy dla wszystkich komponentów',
