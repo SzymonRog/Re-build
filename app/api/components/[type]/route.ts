@@ -3,9 +3,13 @@ import {NextResponse} from "next/server";
 import {PCComponent} from "@/store/buildStore";
 
 
-export async function GET(req: Request,{ params }: { params: { type: string } }){
+export async function GET(req: Request){
     try {
-        const {type} = params;
+        const url = new URL(req.url);
+        // pathname np. "/api/components/gpu"
+        const parts = url.pathname.split("/");
+        const type = parts[parts.length - 1];
+
         let components: PCComponent[] = []
 
         if(type === 'any'){
