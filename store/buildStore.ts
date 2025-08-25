@@ -66,7 +66,8 @@ export const useBuildStore = create<BuildState>()(
                     name: build.name,
                     components: build.components,
                     totalPrice: build.totalPrice,
-                    errors: build.errors
+                    errors: build.errors,
+                    isOwner: true,
                 });
                 get().validateBuild();
             },

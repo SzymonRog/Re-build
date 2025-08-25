@@ -7,8 +7,9 @@ import BuildInfo2 from "@/components/dashboard/v0/BuildInfo2";
 import ActionBar from "@/components/dashboard/ActionBar";
 import {useParams} from "next/navigation";
 import {usePreviewBuildStore} from "@/store/previewBuildStore";
-import {useBuildStore} from "@/store/buildStore";
+import {PCComponent, useBuildStore} from "@/store/buildStore";
 import {toast} from "sonner";
+import {updateBuild} from "@/lib/updateBuild";
 
 const Page = () => {
     const params = useParams();
@@ -32,21 +33,26 @@ const Page = () => {
                 // mapowanie komponentów z Prisma do PCComponent[]
                 const mappedBuild = {
                     ...result.data,
+                    buildId: result.data.id,
                     components: result.data.components
-                        .map((bc: any) => {
-                            console.log("Mapping component:", bc.component); // Debug każdy komponent
+                        .map((bc:  { component: PCComponent | null }) => {// Debug każdy komponent
                             return bc.component;
                         })
-                        .filter(component => component != null), // Usuń null/undefined
+                        .filter((component : PCComponent): component is PCComponent => component != null), // Usuń null/undefined
                 };
 
 
                 if (result.isOwner) {
+                    usePreviewBuildStore.setState({ isOwner: true });
                     setBuild(mappedBuild);
+                    updateBuild(mappedBuild.id, mappedBuild.components.map((c: PCComponent) => c.id))
+                        .then(() => console.log("Auto-save po fetchu"))
+                        .catch(console.error);
                 } else {
+                    usePreviewBuildStore.setState({ isOwner: false });
                     setPreviewBuild(mappedBuild);
                 }
-                usePreviewBuildStore.setState({ isOwner: result.isOwner });
+
 
             } catch (e) {
                 console.error(e);

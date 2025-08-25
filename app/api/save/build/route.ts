@@ -68,10 +68,9 @@ export async function PUT(req: Request) {
         if (!componentsIds || componentsIds.length === 0) {
             return new Response(JSON.stringify({ success: false, error: "Brak komponentów" }), { status: 400, headers: { "Content-Type": "application/json" } })
         }
+
         const user = await prisma.build.findUnique({
-            where: {
-                id
-            }
+            where: { id }
         })
 
         if(!user){
@@ -80,20 +79,24 @@ export async function PUT(req: Request) {
         if(user.userId !== userId){
             return new Response(JSON.stringify({ success: false, error: "Konfiguracja nie należy do urzytkownika" }), { status: 401, headers: { "Content-Type": "application/json" } })
         }
-        await prisma.buildComponent.deleteMany({ where: { buildId: id } });
-        await prisma.build.update({
-            where: {
-                id
-            },
-            data: {
-                userId: userId ?? null,
-                components: {
-                    create: componentsIds.map((componentId: string) => ({
-                        component: { connect: { id: componentId } }
+
+        // ✅ Poprawne podejście - transakcja
+        await prisma.$transaction(async (tx) => {
+            // 1. Usuń stare komponenty
+            await tx.buildComponent.deleteMany({
+                where: { buildId: id }
+            });
+
+            // 2. Dodaj nowe komponenty
+            if (componentsIds.length > 0) {
+                await tx.buildComponent.createMany({
+                    data: componentsIds.map((componentId: string) => ({
+                        buildId: id,
+                        componentId: componentId
                     }))
-                }
+                });
             }
-        })
+        });
 
         return new Response(JSON.stringify({ success: true}), { status: 200, headers: { "Content-Type": "application/json" } })
     }catch (e) {

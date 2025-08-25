@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import {Card, CardContent} from "@/components/ui/card";
 
 import {Button} from "@/components/ui/button";
@@ -11,10 +11,11 @@ import {updateBuild} from "@/lib/updateBuild";
 import {useAutoSaveBuild} from "@/hooks/useAutoSaveBuild";
 import {useBuildData} from "@/hooks/useBuildData";
 import {redirect} from "next/navigation";
+import {usePreviewBuildStore} from "@/store/previewBuildStore";
 
 
 
-const ActionBar = () => {
+const ActionBar =  () => {
 
     const name = useBuildStore(state => state.name)
     const components = useBuildStore(state => state.components)
@@ -22,18 +23,19 @@ const ActionBar = () => {
     const totalPrice = useBuildStore(state => state.totalPrice)
     const setBuildId = useBuildStore(state => state.setBuildId)
     const buildId = useBuildStore(state => state.buildId)
-    const buildIdDisplay = useBuildData().buildId
+    const isOwner = usePreviewBuildStore(state => state.isOwner)
+    const [buildIdDisplay, setBuildIdDisplay] = useState<string | null>(null);
+    const storeBuildData = useBuildData();
 
     const [isLoading, setIsLoading] = useState(false)
     const [copied, setCopied] = useState(false)
     const user = useUserStore(state => state.user)
 
     const buildURL = `http://localhost:3000/konfiguracja/${buildIdDisplay}`
-    useAutoSaveBuild(buildId, componentsIds)
+    useAutoSaveBuild(buildId, componentsIds,isOwner)
     async function handleSave(){
 
         try {
-
             if(!user){
                 return toast('By zapisac swoja konfiguracje należy zalogowac sie')
             }
@@ -57,6 +59,7 @@ const ActionBar = () => {
                 setIsLoading(false)
                 if(data.success){
                     const URL = `http://localhost:3000/konfiguracja/${data.data.id}`
+                    console.log(URL)
                     setBuildId(data.data.id)
                     toast("Build zapisany ✅");
                     redirect(URL)
@@ -84,6 +87,12 @@ const ActionBar = () => {
         setTimeout(() => setCopied(false), 2000)
         return;
     }
+
+    useEffect(() => {
+        if (storeBuildData.buildId) {
+            setBuildIdDisplay(storeBuildData.buildId);
+        }
+    }, [storeBuildData.buildId, buildId]);
     return (
         <Card className="bg-white hover:shadow-xs transition duration-300 w-full max-w-[1700px] p-1 pl-0">
             <CardContent className="px-1">

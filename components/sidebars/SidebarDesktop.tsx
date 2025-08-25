@@ -41,12 +41,13 @@ const SidebarDesktop = ({setSidebarOpen} : { setSidebarOpen: (val: boolean) => v
     const router = useRouter();
     const pathname = usePathname();
     const params = useParams();
-    const buildId = params.id;
+    const buildId = useBuildData().buildId
     const isAdding = pathname.includes('/dodaj');
     const clearBuild = useBuildData().clearBuild
     const components = useBuildData().components
     const addedTypes = new Set(components.map(c => c.type))
     const errors = useBuildData().errors
+
 
     const parts = pathname.split('/');
     const type = isAdding ? parts[parts.length - 1] : null;

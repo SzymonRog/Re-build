@@ -1,6 +1,8 @@
 import { create } from "zustand";
 import {PCComponent, ValidationError} from "@/store/buildStore";
 import {validateBuild} from "@/lib/validateBuild";
+import {useBuildStore} from "@/store/buildStore";
+import {redirect} from "next/navigation";
 
 
 export type PreviewBuildState = {
@@ -24,11 +26,11 @@ export type PreviewBuildState = {
     validateBuild: () => void
     addComponent: (component: PCComponent) => void;
     removeComponent: (componentId: string) => void;
-    markEdited: () => void;
     clearBuild: () => void;
+    syncBuild: () => void;
+    setIsOwner: (isOwner: boolean) => void;
+
 };
-
-
 
 export const usePreviewBuildStore = create<PreviewBuildState>((set, get) => ({
     buildId: null,
@@ -38,21 +40,23 @@ export const usePreviewBuildStore = create<PreviewBuildState>((set, get) => ({
     errors: [],
     isOwner: false,
 
-    setBuild: ({ buildId, name, components, totalPrice, errors = [], isOwner }) => {
+    setBuild: ({ buildId, name, components, totalPrice, errors = [] }) => {
         set({
         buildId,
         name,
         components,
         totalPrice,
         errors,
-        isOwner,
         })
         get().validateBuild();
     },
 
 
 
-    setName: (name) => set({ name }),
+    setName: (name: string) => {
+        set({ name })
+        get().syncBuild()
+    },
     addComponent: (newComponent) => {
         const currentComponents = get().components;
         const updated = [
@@ -60,15 +64,15 @@ export const usePreviewBuildStore = create<PreviewBuildState>((set, get) => ({
             newComponent,
         ];
         set({ components: updated }, false);
-        get().calculateTotal();
         get().validateBuild();
+        get().syncBuild()
     },
     removeComponent: (componentId) => {
         const currentComponents = get().components;
         const updated = currentComponents.filter((c) => c.id !== componentId);
         set({ components: updated }, false);
-        get().calculateTotal();
         get().validateBuild();
+        get().syncBuild()
     },
     clearBuild: () => {
         set({
@@ -85,15 +89,18 @@ export const usePreviewBuildStore = create<PreviewBuildState>((set, get) => ({
     validateBuild: () => {
         const errors = validateBuild(get().components);
         set({ errors });
+
+    },
+    syncBuild: () => {
+        const build = get();
+        if (!build.isOwner) {
+            const localBuild = { ...build, buildId: null, isOwner: true };
+            useBuildStore.getState().setBuild(localBuild);
+        }
     },
 
-    clearBuild: () => set({
-        buildId: null,
-        name: "",
-        components: [],
-        totalPrice: 0,
-        errors: [],
-        isOwner: false,
-        isEdited: false,
-    }),
+    setIsOwner: (isOwner:boolean) => {
+        set({isOwner})
+    }
+
 }));
